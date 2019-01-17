@@ -1,0 +1,309 @@
+@import './config/global';
+html {
+  font-size: 10px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 1.2rem !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: $font-family !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $background-color !important;
+  color: $font-color !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: $font-family !important;
+}
+
+code {
+  font-family: $code-font-family;
+}
+
+// --------------------------------------------------------------------
+// APP CLASSES
+// --------------------------------------------------------------------
+.app-content {
+  padding: $padding-common;
+}
+
+.app-content__tabs-content {
+  padding: $padding-tab;
+}
+
+.app-content__top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  .ant-pagination {
+    z-index: 999;
+  }
+}
+
+.app-actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-actions__right {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.app__status {
+  padding: 0.25em 1em;
+  border-radius: 4px;
+  color: white;
+  text-transform: capitalize;
+  margin-right: 2px;
+  &.--success {
+    background-color: $primary-color;
+  }
+  &.--failed {
+    background-color: $error-color;
+  }
+  &.--error {
+    background-color: $error-color;
+  }
+  &.--refunded {
+    background-color: $gray-color;
+  }
+  &.--pending {
+    background-color: $warning-color;
+  }
+  &.--queue {
+    background-color: #f5a623;
+  }
+  &.--process {
+    background-color: #f5a623;
+  }
+  &.--active {
+    background-color: $primary-color;
+  }
+  &.--inactive {
+    background-color: $gray-color;
+  }
+  &.--approved {
+    background-color: $primary-color;
+  }
+  &.--rejected {
+    background-color: $error-color;
+  }
+}
+
+.table-responsive.--big {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.table-borderless {
+  border: 0 !important;
+  * {
+    border: 0 !important;
+  }
+}
+
+.app-content__filter {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-right: 28px;
+  font-size: 1.5rem !important;
+}
+
+@media only screen and (max-width: 1025px) {
+  .table-responsive {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+// --------------------------------------------------------------------
+// MODIFY ANT.DESIGN CLASSES
+// --------------------------------------------------------------------
+.ant-table {
+  font-size: 1.3rem !important;
+  font-family: $font-family !important;
+  * {
+    font-size: 1.3rem !important;
+    font-family: $font-family !important;
+  }
+}
+
+.ant-card {
+  &.--big-padding .ant-card-body {
+    padding: $padding-big !important;
+  }
+  .ant-card-body {
+    padding: $padding-px !important;
+  }
+}
+
+.ant-divider-horizontal {
+  margin: 1em 0 !important;
+}
+
+.custom__tabs {
+  .ant-tabs-nav-scroll {
+    text-align: center;
+  }
+  .ant-tabs-nav-container {
+    background-color: white;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+  }
+  .ant-tabs-nav-scroll {
+    background: white;
+    border-top: solid 1px #ebedf8;
+  }
+  .ant-tabs-nav .ant-tabs-tab-active,
+  .ant-tabs-nav .ant-tabs-tab:hover {
+    color: black;
+  }
+  .ant-tabs-ink-bar {
+    background: $primary-color;
+  }
+}
+
+.small-card {
+  width: 70% !important;
+}
+
+.ant-form-item-control {
+  line-height: 1.5 !important;
+}
+
+.ant-form-item {
+  margin-bottom: 1em !important;
+}
+
+.ant-btn.disabled,
+.ant-btn[disabled] {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.ant-btn.ant-btn-primary,
+.ant-btn.ant-btn-primary:hover,
+.ant-btn.ant-btn-primary:focus {
+  background-color: $primary-color;
+  color: white !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.ant-btn-primary.disabled,
+.ant-btn-primary[disabled],
+.ant-btn-primary.disabled:hover,
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary.disabled:focus,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary.disabled:active,
+.ant-btn-primary[disabled]:active,
+.ant-btn-primary.disabled.active,
+.ant-btn-primary[disabled].active {
+  color: rgba(0, 0, 0, .25) !important;
+  background-color: #f5f5f5 !important;
+}
+
+.ant-btn:hover,
+.ant-btn:focus {
+  border-color: $primary-color !important;
+  color: $primary-color !important;
+}
+
+// --------------------------------------------------------------------
+// FLEX CLASSES
+// --------------------------------------------------------------------
+.flex,
+.flex-space-between {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-space-between {
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+// --------------------------------------------------------------------
+// TEXT ETC CLASSES
+// --------------------------------------------------------------------
+.small-text {
+  font-size: 1.1rem !important;
+}
+
+.med-text {
+  font-size: 1.3rem !important;
+}
+
+.bold-text {
+  font-weight: bold !important;
+}
+
+.block {
+  margin-bottom: 1em !important;
+}
+
+.btn-oval {
+  border-radius: 16px !important;
+  padding: 0 2.5em !important;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1) !important;
+  &.disabled,
+  &[disabled],
+  &.disabled:hover,
+  &[disabled]:hover,
+  &.disabled:focus,
+  &[disabled]:focus,
+  &.disabled:active,
+  &[disabled]:active,
+  &.disabled.active,
+  &[disabled].active {
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+}

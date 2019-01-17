@@ -1,0 +1,19 @@
+.table-control__item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.table-control__additional-left {
+  margin-left: 0.5em;
+}
+
+.table-control__additional-right {
+  margin-right: 0.5em;
+}
+
+.table-control__search {
+  input {
+    font-size: 1.3rem !important;
+  }
+}

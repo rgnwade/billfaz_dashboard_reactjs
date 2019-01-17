@@ -1,0 +1,20 @@
+.app-profile__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2em; }
+
+.app-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.app-profile__pic {
+  margin-right: 1em;
+  height: 60px;
+  width: 60px;
+  background-color: #a09eb5;
+  border-radius: 50%; }
+
+.app-profile__status {
+  padding: 0.25em 2em !important; }

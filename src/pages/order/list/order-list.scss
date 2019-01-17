@@ -1,0 +1,20 @@
+.order-list__summary-item {
+  padding: 0.5em 2em;
+  border-left: solid 1px #dbe0e4;
+  text-align: center;
+  cursor: pointer;
+  &.--disabled {
+    cursor: not-allowed !important;
+  }
+}
+
+.order-list__summary-item-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  &.--pending {
+    color: #f7da2c;
+  }
+  &.--error {
+    color: #f47282;
+  }
+}

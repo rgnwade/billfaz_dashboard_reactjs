@@ -1,0 +1,16 @@
+.app-header {
+  display: flex;
+  justify-content: space-between; }
+
+.app-header__logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center; }
+
+.app-header__logo-svg {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .app-header__logo-svg svg {
+    height: 40px;
+    width: auto; }

@@ -1,0 +1,25 @@
+.page-404 {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: center;
+  padding: 15px;
+}
+
+.page-404 h1 {
+  color: #009696;
+  font-weight: 700;
+}
+
+.page-404 h2 {
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.page-404-inner {
+  padding: 40px;
+  display: inline-table;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+}
