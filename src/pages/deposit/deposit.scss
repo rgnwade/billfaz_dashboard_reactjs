@@ -1,0 +1,8 @@
+@import '../../config/_global.scss';
+
+.topup-deposit__modal {
+  .ant-upload.ant-upload-drag p.ant-upload-drag-icon .anticon {
+    color: $primary-color;
+    font-size: 3rem;
+  }
+}

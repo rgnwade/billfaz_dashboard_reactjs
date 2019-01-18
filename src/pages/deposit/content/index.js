@@ -58,6 +58,17 @@ class ClientDeposit extends Component {
     this.setState({ ...this.state, modalData: { ...modalData, date } })
   }
 
+  removeFileModalData = () => {
+    const { modalData } = this.state
+    this.setState({ ...this.state, modalData: { ...modalData, file: [] } })
+  }
+
+  uploadFileModalData = (file) => {
+    const { modalData } = this.state
+    this.setState({ ...this.state, modalData: { ...modalData, file: [file] } })
+    return false
+  }
+
   clickTopup = (selected) => {
     this.setState({ ...this.state, modal: true, selected })
   }
@@ -66,21 +77,25 @@ class ClientDeposit extends Component {
     this.setState({ ...this.state, modal: false, selected: {}, modalData: {} })
   }
 
-  modalOk = () => {
+  modalOk = async () => {
     const { type } = this.props
     const { selected, modalData } = this.state
     if (!(modalData.amount && modalData.date)) return
-    const payload = {
-      amount: modalData.amount,
-      date: modalData.date.format('YYYY-MM-DD'),
-    }
+    await this.setState({ ...this.state, modalData: { ...modalData, loading: true } })
+    const payload = new FormData()
+    if (modalData.file && modalData.file.length > 0) payload.append('image', modalData.file[0])
+    payload.append('amount', modalData.amount)
+    payload.append('date', modalData.date.format('YYYY-MM-DD'))
     DepositApi.topup(type, selected.id, payload)
       .then(async () => {
         message.success('Top up success')
         await this.closeModal()
         this.getData()
       })
-      .catch(err => message.error(getErrorMessage(err) || 'Top up failed'))
+      .catch((err) => {
+        this.setState({ ...this.state, modalData: { ...modalData, loading: false } })
+        message.error(getErrorMessage(err) || 'Top up failed')
+      })
   }
 
   getData = async (params = this.state.params) => {
@@ -174,6 +189,8 @@ class ClientDeposit extends Component {
           modalData={modalData}
           changeAmount={this.changeModalDataAmount}
           changeDate={this.changeModalDataDate}
+          removeFile={this.removeFileModalData}
+          uploadFile={this.uploadFileModalData}
         />
       </div>
     )

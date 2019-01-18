@@ -1,8 +1,8 @@
 import PUBLIC_URL from './url'
 
 export const MENU = {
-  LOGIN: `${PUBLIC_URL}`,
-  LOGIN_KEY: '',
+  HOME: `${PUBLIC_URL}/`,
+  LOGIN: `${PUBLIC_URL}/login`,
   ORDER: `${PUBLIC_URL}/orders`,
   ORDER_KEY: 'orders',
   DEPOSIT: `${PUBLIC_URL}/deposit`,

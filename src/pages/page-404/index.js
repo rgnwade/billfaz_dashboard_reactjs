@@ -1,10 +1,3 @@
-/*
-project name : Canfazz Dashboard
-source : app/pages/page-404/index.js
-description : component for display page 404 (not found)
-*/
-
-
 import React from 'react'
 import './page-404.scss'
 import { Link } from 'react-router-dom'

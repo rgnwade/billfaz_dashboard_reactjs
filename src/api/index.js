@@ -1,7 +1,6 @@
 import axios from 'axios'
+import Cookies from 'universal-cookie'
 
-import { PUBLIC_URL } from '../config/url'
-import { cookies } from '../utils/cookies'
 import { CONFIG_COOKIES } from '../config/cookies'
 import Auth from './auth'
 import Order from './order'
@@ -11,25 +10,33 @@ import Client from './client'
 import Provider from './provider'
 import Permission from './permission'
 import User from './user'
+import MENU from '../config/menu'
 
 export const url = process.env.NODE_ENV === 'production'
   ? process.env.REACT_APP_API_URL_PROD
   : process.env.REACT_APP_API_URL_DEV
 
-export const configApi = () => ({
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${cookies.get(CONFIG_COOKIES.TOKEN)}`,
-  },
-})
+export const configApi = ({ contentType } = {}) => {
+  const cookies = new Cookies()
+  return {
+    headers: {
+      'Content-Type': contentType || 'application/json',
+      Authorization: `Bearer ${cookies.get(CONFIG_COOKIES.TOKEN)}`,
+    },
+  }
+}
 
 // Destroy access
-export const BACK_TO_LOGIN = async () => {
+export const BACK_TO_LOGIN = async (isExpired = false) => {
+  const cookies = new Cookies()
   await cookies.remove(CONFIG_COOKIES.TOKEN)
+  if (cookies.get(CONFIG_COOKIES.TOKEN)) {
+    document.cookie = `${CONFIG_COOKIES.TOKEN}=;`
+  }
   await cookies.remove(CONFIG_COOKIES.ROLE)
   await cookies.remove(CONFIG_COOKIES.USERNAME)
   await cookies.remove(CONFIG_COOKIES.PERMISSION)
-  window.location.href = PUBLIC_URL || '/'
+  window.location.href = isExpired ? `${MENU.LOGIN}?isExpired=true` : MENU.HOME
 }
 
 // For handle 401 status
@@ -38,11 +45,12 @@ axios.interceptors.response.use(
   (err) => {
     if (
       err.response
-      && err.response.status === 401
-      // && err.response.data.code !== 'ClientUnauthorizedError'
-      && !err.request.responseURL.includes('v1/auth')
+      && (
+        (err.response.status === 401 && !err.request.responseURL.includes('v1/auth'))
+        || (err.response.status === 403 && err.response.data.code === 'ClientUnauthorizedError')
+      )
     ) {
-      BACK_TO_LOGIN()
+      BACK_TO_LOGIN(true)
     }
     return Promise.reject(err)
   },

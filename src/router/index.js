@@ -16,6 +16,7 @@ const RouteConfig = (
   <Router>
     <div>
       <Switch>
+        <Route exact path={MENU.HOME} component={Login} />
         <Route exact path={MENU.LOGIN} component={Login} />
         <PrivateRoute exact path={MENU.ORDER} component={Order} />
         <PrivateRoute exact path={`${MENU.ORDER}/:type`} component={Order} />

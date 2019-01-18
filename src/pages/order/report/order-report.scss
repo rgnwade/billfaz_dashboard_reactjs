@@ -17,7 +17,7 @@
     }
     &.--active {
       background: $primary-color;
-      color: white;
+      color: white !important;
     }
   }
   .ant-btn:first-child:not(:last-child), span:first-child:not(:last-child) > .ant-btn {

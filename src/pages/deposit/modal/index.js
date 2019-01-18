@@ -1,20 +1,38 @@
 import React from 'react'
-import { DatePicker, Input, Modal } from 'antd'
+import { DatePicker, Icon, Input, Modal, Upload, Button } from 'antd'
 import PropTypes from 'prop-types'
 import { numberToMoneyNoRP } from '../../../utils/formatter/currency'
+import '../deposit.scss'
 
-const TopupModal = ({ data, visible, modalOk, modalClose, changeAmount, changeDate, modalData }) => (
+const TopupModal = ({
+  data,
+  visible,
+  modalOk,
+  modalClose,
+  changeAmount,
+  changeDate,
+  modalData,
+  removeFile,
+  uploadFile,
+}) => (
   <Modal
     title={`Top Up Deposit ${(data.client && data.client.name) || ''}`}
     visible={visible}
-    onOk={modalOk}
-    okText="Top up"
     onCancel={modalClose}
+    footer={(
+      <div className="flex-end">
+        <Button onClick={modalClose}>Cancel</Button>
+        <Button type="primary" onClick={modalOk} loading={modalData.loading}>Top up</Button>
+      </div>
+    )}
   >
-    <div>
+    <div className="topup-deposit__modal">
       <div className="block">
         <label className="small-text">Amount</label>
-        <Input value={numberToMoneyNoRP(modalData.amount)} onChange={changeAmount} />
+        <Input
+          value={numberToMoneyNoRP(modalData.amount)}
+          onChange={changeAmount}
+        />
       </div>
       <div className="block">
         <label className="small-text">Transfer date</label>
@@ -26,6 +44,19 @@ const TopupModal = ({ data, visible, modalOk, modalClose, changeAmount, changeDa
             onChange={changeDate}
           />
         </div>
+      </div>
+      <div className="block">
+        <Upload.Dragger onRemove={removeFile} beforeUpload={uploadFile} fileList={modalData.file}>
+          <p
+            className="ant-upload-drag-icon"
+            style={{ marginBottom: '0.25em' }}
+          >
+            <Icon type="inbox" />
+          </p>
+          <p className="ant-upload-hint">
+            Drag a file here or Browse for a file to upload.
+          </p>
+        </Upload.Dragger>
       </div>
     </div>
   </Modal>
@@ -39,6 +70,8 @@ TopupModal.propTypes = {
   modalClose: PropTypes.func.isRequired,
   changeAmount: PropTypes.func.isRequired,
   changeDate: PropTypes.func.isRequired,
+  removeFile: PropTypes.func.isRequired,
+  uploadFile: PropTypes.func.isRequired,
 }
 
 export default TopupModal

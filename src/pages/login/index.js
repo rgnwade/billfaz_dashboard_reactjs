@@ -1,13 +1,8 @@
-/*
-------------------------------------------------------------
-project name: verifazz-dashboard
-source: app/components/pages/login/index.js
------------------------------------------------------------
-*/
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
+import qs from 'qs'
+import { message } from 'antd'
 
 import FormLogin from './form'
 import Logo from '../../assets/billfazz-logo-29.png'
@@ -24,6 +19,12 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    const { location } = this.props
+    const parsedQuery = qs.parse(location.search.replace('?', ''))
+    if (parsedQuery.isExpired) {
+      message.error('Session may be expired. Please login again')
+      return
+    }
     const token = getCookies(CONFIG_COOKIES.TOKEN)
     if (token) {
       AuthApi.test()
@@ -48,6 +49,7 @@ class Login extends Component {
 
 Login.propTypes = {
   history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 export default withRouter(Login)

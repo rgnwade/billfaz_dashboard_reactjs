@@ -18,3 +18,28 @@
     color: #f47282;
   }
 }
+
+.order-list__copy-btn,
+.order-list__copy-btn:hover,
+.order-list__copy-btn:focus {
+  padding: 0em 0.5em;
+  margin: 0 0.5em;
+  display: inline-block;
+  text-align: center;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  font-size: 1.3rem;
+  border-radius: 4px;
+  user-select: none;
+  -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  position: relative;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  color: rgba(0, 0, 0, 0.65);
+  background-color: #fff;
+  border-color: #d9d9d9;
+  outline: 0;
+}

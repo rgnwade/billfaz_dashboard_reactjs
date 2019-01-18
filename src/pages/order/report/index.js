@@ -110,7 +110,7 @@ class Report extends Component {
                 <Input
                   className="order-report__search"
                   prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Search by #OrderId, #OrderId"
+                  placeholder="Search by OrderId, OrderId"
                   style={{ width: 300 }}
                   value={data.orderIds}
                   onChange={this.changeOrderIds}
