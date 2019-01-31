@@ -192,66 +192,66 @@ class OrderList extends Component {
 
   render() {
     const { loading, data, params, valPerPage, modal, modalData, clients, providers, total } = this.state
-    const leftFilter = (
-      <div className="flex">
-        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_PROVIDER} style={{ marginRight: '1em' }}>
-          <div>
-            <label className="small-text">Provider:</label>
-            <div>
-              <Select value={params.providerId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'providerId')}>
-                {
-                  providers.map(provider => (
-                    <Select.Option key={provider.id} value={provider.id.toString()}>{provider.name}</Select.Option>
-                  ))
-                }
-              </Select>
-            </div>
-          </div>
-        </Role>
-        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_CLIENT} style={{ marginRight: '1em' }}>
-          <label className="small-text">Client:</label>
-          <div>
-            <Select value={params.clientId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'clientId')}>
-              {
-                clients.map(client => (
-                  <Select.Option key={client.id} value={client.id.toString()}>{client.name}</Select.Option>
-                ))
-              }
-            </Select>
-          </div>
-        </Role>
-        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_STATUS}>
-          <label className="small-text">Order Status:</label>
-          <div>
-            <Select value={params.filterType || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'filterType')}>
-              {
-                OPTIONS_CONFIG_ORDER_STATUS.map(status => (
-                  <Select.Option key={status.id} value={status.id}>{status.name}</Select.Option>
-                ))
-              }
-            </Select>
-          </div>
-        </Role>
-      </div>
-    )
-    const rightFilter = (
-      <div className="flex">
-        <div
-          className={`order-list__summary-item ${(loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS)) ? '--disabled' : ''}`}
-          onClick={loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS) ? () => {} : () => this.clickFilterStatus(FILTER_ORDER_STATUS.PENDING)}
-        >
-          <div className="order-list__summary-item-value --pending">{total.pending || 0}</div>
-          <div>PENDING</div>
-        </div>
-        <div
-          className={`order-list__summary-item ${(loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS)) && '--disabled'}`}
-          onClick={loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS) ? () => {} : () => this.clickFilterStatus(FILTER_ORDER_STATUS.ERROR)}
-        >
-          <div className="order-list__summary-item-value --error">{total.failed || 0}</div>
-          <div>ERROR</div>
-        </div>
-      </div>
-    )
+    // const leftFilter = (
+    //   <div className="flex">
+    //     <Role roleItem={ROLES_ITEMS.ORDER_FILTER_PROVIDER} style={{ marginRight: '1em' }}>
+    //       <div>
+    //         <label className="small-text">Provider:</label>
+    //         <div>
+    //           <Select value={params.providerId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'providerId')}>
+    //             {
+    //               providers.map(provider => (
+    //                 <Select.Option key={provider.id} value={provider.id.toString()}>{provider.name}</Select.Option>
+    //               ))
+    //             }
+    //           </Select>
+    //         </div>
+    //       </div>
+    //     </Role>
+    //     <Role roleItem={ROLES_ITEMS.ORDER_FILTER_CLIENT} style={{ marginRight: '1em' }}>
+    //       <label className="small-text">Client:</label>
+    //       <div>
+    //         <Select value={params.clientId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'clientId')}>
+    //           {
+    //             clients.map(client => (
+    //               <Select.Option key={client.id} value={client.id.toString()}>{client.name}</Select.Option>
+    //             ))
+    //           }
+    //         </Select>
+    //       </div>
+    //     </Role>
+    //     <Role roleItem={ROLES_ITEMS.ORDER_FILTER_STATUS}>
+    //       <label className="small-text">Order Status:</label>
+    //       <div>
+    //         <Select value={params.filterType || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'filterType')}>
+    //           {
+    //             OPTIONS_CONFIG_ORDER_STATUS.map(status => (
+    //               <Select.Option key={status.id} value={status.id}>{status.name}</Select.Option>
+    //             ))
+    //           }
+    //         </Select>
+    //       </div>
+    //     </Role>
+    //   </div>
+    // )
+    // const rightFilter = (
+    //   <div className="flex">
+    //     <div
+    //       className={`order-list__summary-item ${(loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS)) ? '--disabled' : ''}`}
+    //       onClick={loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS) ? () => {} : () => this.clickFilterStatus(FILTER_ORDER_STATUS.PENDING)}
+    //     >
+    //       <div className="order-list__summary-item-value --pending">{total.pending || 0}</div>
+    //       <div>PENDING</div>
+    //     </div>
+    //     <div
+    //       className={`order-list__summary-item ${(loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS)) && '--disabled'}`}
+    //       onClick={loading || !hasAccess(ROLES_ITEMS.ORDER_FILTER_STATUS) ? () => {} : () => this.clickFilterStatus(FILTER_ORDER_STATUS.ERROR)}
+    //     >
+    //       <div className="order-list__summary-item-value --error">{total.failed || 0}</div>
+    //       <div>ERROR</div>
+    //     </div>
+    //   </div>
+    // )
     return (
       <div>
         <TableControl
@@ -266,7 +266,7 @@ class OrderList extends Component {
           changeSearch={this.changeSearch}
         />
         <OrderReport />
-        <Filter left={leftFilter} right={rightFilter} />
+        {/* <Filter left={leftFilter} right={rightFilter} /> */}
         <Card>
           <Table
             className="table-responsive"
