@@ -15,8 +15,9 @@ import { ORDER_STATUS } from '../../../config/order'
 import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../../../utils/url-query-params'
 import Role from '../../../components/role'
 import { ROLES_ITEMS } from '../../../config/roles'
-import './order-list.scss'
 import { hasAccess } from '../../../utils/roles'
+import OrderReport from '../report'
+import './order-list.scss'
 
 class OrderList extends Component {
   constructor(props) {
@@ -264,6 +265,7 @@ class OrderList extends Component {
           searchValue={params.query}
           changeSearch={this.changeSearch}
         />
+        <OrderReport />
         <Filter left={leftFilter} right={rightFilter} />
         <Card>
           <Table
