@@ -1,15 +1,31 @@
 import React from 'react'
-import { Button } from 'antd'
+import { Button,Tooltip } from 'antd'
 
 import { DEPOSIT_TYPES } from '../../../config/deposit'
 import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { numberToMoney } from '../../../utils/formatter/currency'
 
 const columnFields = {
-  clientCode: {
-    title: 'Client Code',
-    dataIndex: 'client',
-    key: 'clientCode',
+  createdDate: {
+    title: 'Created Date',
+    dataIndex: 'createddate',
+    key: 'createdDate',
+    render: text => (
+      <div>{datetimeToLocal(text)}</div>
+    ),
+  },
+  transaction: {
+    title: 'Order ID',
+    dataIndex: 'transaction',
+    key: 'transactionID',
+    render: text => (
+      <div>{text && text.name}</div>
+    ),
+  },
+  amount: {
+    title: 'Amount',
+    dataIndex: 'amount',
+    key: 'amountID',
     render: text => (
       <div>{text && text.name}</div>
     ),
@@ -19,46 +35,59 @@ const columnFields = {
     dataIndex: 'provider',
     key: 'providerClientCode',
   },
-  remaining: {
-    title: 'Remaining Deposit',
-    dataIndex: 'balance',
-    key: 'balance',
+  balanceBefore: {
+    title: 'Balance Before',
+    dataIndex: 'balanceBefore',
+    key: 'balanceBefore',
     render: text => (
       <div>{numberToMoney(text)}</div>
     ),
   },
-  lastUpdate: {
-    title: 'Last Update',
-    dataIndex: 'updatedAt',
-    key: 'lastUpdate',
+  balanceAfter: {
+    title: 'Balance After',
+    dataIndex: 'balanceAfter',
+    key: 'balanceAfter',
     render: text => (
-      <div>{datetimeToLocal(text)}</div>
+      <div>{numberToMoney(text)}</div>
     ),
   },
-  topup: (topupClick = () => {}, hasAccessTopup = false) => ({
-    title: '',
-    dataIndex: 'key',
-    key: 'topup',
-    render: (text, record) => hasAccessTopup && (
-      <Button onClick={() => topupClick(record)}>
-        Top up Deposit
-      </Button>
+  // topup: (topupClick = () => {}, hasAccessTopup = false) => ({
+  //   title: '',
+  //   dataIndex: 'key',
+  //   key: 'topup',
+  //   render: (text, record) => hasAccessTopup && (
+  //     <Button onClick={() => topupClick(record)}>
+  //       Top up Deposit
+  //     </Button>
+  //   ),
+  // }),
+  operation: {
+    title: 'Operation',
+    dataIndex: 'operation',
+    key: 'status',
+    render: operation => (
+      <div style={{ width: '150px' }}>
+        <span className={`app__status --${operation ? 'active' : 'inactive'}`}>{operation ? 'Active' : 'Inactive'}</span>
+      </div>
     ),
-  }),
+  }
+  
 }
 
 const columns = {
   [DEPOSIT_TYPES.CLIENTS]: (topupClick, hasAccessTopup) => [
-    columnFields.clientCode,
-    columnFields.remaining,
-    columnFields.lastUpdate,
-    columnFields.topup(topupClick, hasAccessTopup),
-  ],
-  [DEPOSIT_TYPES.PROVIDERS]: () => [
-    columnFields.providerClientCode,
-    columnFields.remaining,
-    columnFields.lastUpdate,
-  ],
+    columnFields.createdDate,
+    columnFields.transaction,
+    columnFields.amount,
+    columnFields.balanceBefore,
+    columnFields.balanceAfter,
+    columnFields.operation
+    // columnFields.topup(topupClick, hasAccessTopup),
+  ]
+  // [DEPOSIT_TYPES.PROVIDERS]: () => [
+  //   columnFields.providerClientCode,
+  //   columnFields.balanceAfter,
+  // ],
 }
 
 export default columns

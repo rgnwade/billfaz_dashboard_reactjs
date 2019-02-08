@@ -7,21 +7,22 @@ import Main from '../../components/main'
 import { DEPOSIT_TYPES } from '../../config/deposit'
 import MENU from '../../config/menu'
 import ListDeposit from './content'
+import CreateNotification from './create'
 import { ROLES_ITEMS } from '../../config/roles'
 import { hasAccess } from '../../utils/roles'
 
 const panes = activeKey => [
   {
     key: DEPOSIT_TYPES.CLIENTS,
-    title: 'Clients Deposit',
+    title: 'Deposit List',
     content: <ListDeposit type={DEPOSIT_TYPES.CLIENTS} active={activeKey === DEPOSIT_TYPES.CLIENTS} />,
     role: ROLES_ITEMS.DEPOSIT_CLIENT,
   },
   {
-    key: DEPOSIT_TYPES.PROVIDERS,
-    title: 'Providers Deposit',
-    content: <ListDeposit type={DEPOSIT_TYPES.PROVIDERS} active={activeKey === DEPOSIT_TYPES.PROVIDERS} />,
-    role: ROLES_ITEMS.DEPOSIT_PROVIDER,
+    key: DEPOSIT_TYPES.NOTIF,
+    title: 'Notification Deposit',
+    content: <CreateNotification type={DEPOSIT_TYPES.NOTIF} active={activeKey === DEPOSIT_TYPES.NOTIF} />,
+    role: ROLES_ITEMS.DEPOSIT_CLIENT,
   },
 ]
 

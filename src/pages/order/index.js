@@ -41,16 +41,17 @@ class Order extends Component {
         title: 'Order List',
         content: <List active={activeKey === ORDER_TABS.LIST} />,
       },
-      {
-        key: ORDER_TABS.SEND_REPORT,
-        title: 'Send Report',
-        content: <Report />,
-      },
+      // {
+      //   key: ORDER_TABS.SEND_REPORT,
+      //   title: 'Send Report',
+      //   content: <Report />,
+      // },
     ]
+
     return (
       <Main title="Orders">
         <div>
-          <Tabs activeKey={activeKey} onChange={this.changeTab} className="custom__tabs">
+          {/* <Tabs activeKey={activeKey} onChange={this.changeTab} className="custom__tabs">
             {
               panes.map(x => (
                 <Tabs.TabPane tab={x.title} key={x.key}>
@@ -60,7 +61,8 @@ class Order extends Component {
                 </Tabs.TabPane>
               ))
             }
-          </Tabs>
+          </Tabs> */}
+          <List />
         </div>
       </Main>
     )
