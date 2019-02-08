@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Modal, Select, Table, message } from 'antd'
+import { Card, Modal, Select, Table, message, DatePicker } from 'antd'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -18,6 +18,11 @@ import { ROLES_ITEMS } from '../../../config/roles'
 import './order-list.scss'
 import { hasAccess } from '../../../utils/roles'
 
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+
+function onChange(date, dateString) {
+  console.log(date, dateString);
+}
 class OrderList extends Component {
   constructor(props) {
     super(props)
@@ -193,34 +198,8 @@ class OrderList extends Component {
     const { loading, data, params, valPerPage, modal, modalData, clients, providers, total } = this.state
     const leftFilter = (
       <div className="flex">
-        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_PROVIDER} style={{ marginRight: '1em' }}>
-          <div>
-            <label className="small-text">Provider:</label>
-            <div>
-              <Select value={params.providerId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'providerId')}>
-                {
-                  providers.map(provider => (
-                    <Select.Option key={provider.id} value={provider.id.toString()}>{provider.name}</Select.Option>
-                  ))
-                }
-              </Select>
-            </div>
-          </div>
-        </Role>
-        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_CLIENT} style={{ marginRight: '1em' }}>
-          <label className="small-text">Client:</label>
-          <div>
-            <Select value={params.clientId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'clientId')}>
-              {
-                clients.map(client => (
-                  <Select.Option key={client.id} value={client.id.toString()}>{client.name}</Select.Option>
-                ))
-              }
-            </Select>
-          </div>
-        </Role>
         <Role roleItem={ROLES_ITEMS.ORDER_FILTER_STATUS}>
-          <label className="small-text">Order Status:</label>
+          <label className="small-text">Status:</label>
           <div>
             <Select value={params.filterType || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'filterType')}>
               {
@@ -229,6 +208,28 @@ class OrderList extends Component {
                 ))
               }
             </Select>
+          </div>
+        </Role>
+
+        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_PROVIDER} style={{ marginRight: '1em' }}>
+          <div>
+            <label className="small-text">Provider:</label>
+            <div>
+              <DatePicker onChange={onChange} />
+            </div>
+          </div>
+        </Role>
+        <Role roleItem={ROLES_ITEMS.ORDER_FILTER_CLIENT} style={{ marginRight: '1em' }}>
+          <label className="small-text">Client:</label>
+          <div>
+          <DatePicker onChange={onChange} />
+            {/* <Select value={params.clientId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'clientId')}>
+              {
+                clients.map(client => (
+                  <Select.Option key={client.id} value={client.id.toString()}>{client.name}</Select.Option>
+                ))
+              }
+            </Select> */}
           </div>
         </Role>
       </div>
@@ -260,7 +261,7 @@ class OrderList extends Component {
           handlePrevPage={this.handlePrevPage}
           handleNextPage={this.handleNextPage}
           loading={loading}
-          searchText="#OrderId, !ReferenceID, $Destination Number"
+          searchText="OrderId, ReferenceID, Destination Number"
           searchValue={params.query}
           changeSearch={this.changeSearch}
         />
