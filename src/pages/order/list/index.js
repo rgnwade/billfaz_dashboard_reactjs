@@ -178,7 +178,7 @@ class OrderList extends Component {
           handlePrevPage={this.handlePrevPage}
           handleNextPage={this.handleNextPage}
           loading={loading}
-          searchText="#OrderId, !ReferenceID, $Destination Number"
+          searchText="Customer Number, Voucher / Token Number, Order ID"
           searchValue={params.query}
           changeSearch={this.changeSearch}
         />

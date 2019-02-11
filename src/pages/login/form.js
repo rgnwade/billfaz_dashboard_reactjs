@@ -63,6 +63,17 @@ class FormSignIn extends Component {
     return (
       <Form onSubmit={this.submitSignin}>
         <Form.Item>
+          <label class="login-form">Client ID</label>
+          <Input
+            required
+            name="clientID"
+            placeholder="Client ID"
+            value={username}
+            onChange={this.changeUsername}
+          />
+        </Form.Item>
+        <label class="login-form">Username</label>
+        <Form.Item>
           <Input
             required
             name="username"
@@ -71,6 +82,7 @@ class FormSignIn extends Component {
             onChange={this.changeUsername}
           />
         </Form.Item>
+        <label class="login-form">Password</label>
         <Form.Item>
           <Input
             required
