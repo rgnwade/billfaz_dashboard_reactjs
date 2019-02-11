@@ -218,7 +218,7 @@ class ClientDeposit extends Component {
               <a class="total">Total Deposit</a>
               <div class="top-up">Rp.546.875.089
               </div>
-                <Button htmlType="submit" className="top-up" onClick={this.showModal} loading={loading} type="primary">TOP UP</Button>
+              <Button htmlType="submit" className="top-up" onClick={this.showModal} loading={loading} type="primary">TOP UP</Button>
                 <Modal
           title="Top Up Information"
           visible={this.state.visible}
