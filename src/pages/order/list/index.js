@@ -221,7 +221,7 @@ class OrderList extends Component {
         </Role>
         <Role roleItem={ROLES_ITEMS.ORDER_FILTER_CLIENT} style={{ marginRight: '1em' }}>
           <label className="small-text">Client:</label>
-          <div>
+          <div>  
           <DatePicker onChange={onChange} />
             {/* <Select value={params.clientId || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'clientId')}>
               {
@@ -261,7 +261,7 @@ class OrderList extends Component {
           handlePrevPage={this.handlePrevPage}
           handleNextPage={this.handleNextPage}
           loading={loading}
-          searchText="OrderId, ReferenceID, Destination Number"
+          searchText="Customer Number, Voucher / Token Number, Order ID"
           searchValue={params.query}
           changeSearch={this.changeSearch}
         />
