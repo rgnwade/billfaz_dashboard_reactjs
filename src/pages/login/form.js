@@ -15,10 +15,12 @@ class FormSignIn extends Component {
     this.state = {
       username: '',
       password: '',
+      clientId: '',
       viewPassword: false,
       loading: false,
     }
   }
+  changeClientID = e => this.setState({ clientId: e.target.value })
 
   changeUsername = e => this.setState({ username: e.target.value })
 
@@ -29,8 +31,8 @@ class FormSignIn extends Component {
   submitSignin = async (e) => {
     e.preventDefault()
     await this.setState({ ...this.state, loading: true })
-    const { username, password } = this.state
-    const token = await AuthApi.login({ clientId: 0, username, password })
+    const { clientId, username, password } = this.state
+    const token = await AuthApi.login({ clientId, username, password })
       .then((res) => {
         cookies.set(CONFIG_COOKIES.USERNAME, username)
         return res.data.token
@@ -57,7 +59,7 @@ class FormSignIn extends Component {
   }
 
   render() {
-    const { username, password, viewPassword, loading } = this.state
+    const { clientId, username, password, viewPassword, loading } = this.state
     const passwordType = viewPassword ? 'text' : 'password'
 
     return (
@@ -68,8 +70,8 @@ class FormSignIn extends Component {
             required
             name="clientID"
             placeholder="Client ID"
-            value={username}
-            onChange={this.changeUsername}
+            value={clientId}
+            onChange={this.changeClientID}
           />
         </Form.Item>
         <label class="login-form">Username</label>
