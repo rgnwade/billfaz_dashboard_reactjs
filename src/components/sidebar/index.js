@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Drawer } from 'antd'
+import { Menu, Drawer, Icon } from 'antd'
 import { NavLink, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -26,9 +26,9 @@ const Sidebar = ({ collapsed, toggle, location, logout }) => {
       <div>
         <div className="sidebar__profile">
           <Profile name={getCookies(CONFIG_COOKIES.USERNAME)} />
-          {/* <NavLink to="/setting">
+          <NavLink to={MENU.PROFILE}>
             <Icon type="setting" />
-          </NavLink> */}
+          </NavLink>
         </div>
         <Menu
           mode="inline"

@@ -10,6 +10,7 @@ import Client from '../pages/client'
 import Product from '../pages/product'
 import ProductClientDetail from '../pages/product/client-detail'
 import Page404 from '../pages/page-404'
+import Profile from '../pages/profile'
 import MENU from '../config/menu'
 
 const RouteConfig = (
@@ -28,6 +29,7 @@ const RouteConfig = (
         <PrivateRoute exact path={MENU.PRODUCT} component={Product} />
         <PrivateRoute exact path={`${MENU.PRODUCT}/:type`} component={Product} />
         <PrivateRoute exact path={`${MENU.PRODUCT}/clients/:clientId/detail/:id`} component={ProductClientDetail} />
+        <PrivateRoute exact path={MENU.PROFILE} component={Profile} />
         <Route component={Page404} />
       </Switch>
     </div>

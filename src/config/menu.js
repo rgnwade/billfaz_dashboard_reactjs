@@ -11,6 +11,8 @@ export const MENU = {
   PRODUCT_KEY: 'product',
   CLIENT: `${PUBLIC_URL}/client`,
   CLIENT_KEY: 'client',
+  PROFILE: `${PUBLIC_URL}/profile`,
+  PROFILE_KEY: 'profile',
 }
 
 export default MENU

@@ -1,0 +1,56 @@
+.profile .app-content {
+  display: flex;
+  justify-content: center;
+}
+
+.profile .ant-card-body {
+  padding: 24px !important;
+}
+
+.profile__nav {
+  width: calc(30% - 1em);
+  margin-right: 1em !important;
+  height: 100%;
+}
+
+.profile__content {
+  width: 70%;
+}
+
+.profile__actions {
+  margin-top: 2em;
+}
+
+.profile__actions-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile__actions-container button {
+  margin-left: 0.5em;
+}
+
+.profile__picture {
+  padding: 1em 0 2em 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profile__picture-upload {
+  margin-left: 1em;
+}
+
+.profile__picture-upload button {
+  margin-bottom: 0.5em;
+}
+
+.profile .ant-divider-horizontal {
+  margin: 1em 0;
+}
+
+.profile form button[type='submit'], form input[type='submit'] {
+  margin-top: 0;
+}
