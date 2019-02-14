@@ -62,12 +62,23 @@ class ClientDeposit extends Component {
     }
   }
 
-  changeModalDataAmount = (e) => {
+  changeModalDataStatus = (issuedStatus) => {
     const { modalData } = this.state
-    const val = Number.isNaN(parseInt(e.target.value, 10))
-      ? e.target.value
-      : moneyToNumber(e.target.value)
-    this.setState({ ...this.state, modalData: { ...modalData, amount: val || 0 } })
+    this.setState({ ...this.state, modalData: { ...modalData, issuedStatus } })
+  }
+
+  changeModalDataReference = (e) => {
+    const { modalData } = this.state
+    this.setState({ ...this.state, modalData: { ...modalData, voucher: e.target.value } })
+  }
+
+
+  openModal = (selected) => {
+    this.setState({ ...this.state, modal: true, selected })
+  }
+
+  closeModal = () => {
+    this.setState({ ...this.state, modal: false, selected: {}, modalData: {} })
   }
 
   getData = async (params = this.state.params) => {
@@ -192,9 +203,20 @@ class ClientDeposit extends Component {
     )
 
     const rightFilter = (
-
-    <Button htmlType="submit" className="btn-oval" loading={loading} type="primary">EXPORT DATA</Button>)
-    
+<div>
+    <Button htmlType="submit" className="btn-oval" onClick={this.openModal} loading={loading} type="primary">EXPORT DATA</Button>
+   
+    <TopupModal
+    visible={modal}
+    modalOk={this.clickChangeStatus}
+    modalClose={this.closeModal}
+    data={modalData}
+    changeStatus={this.changeModalDataStatus}
+    changeReferenceNumber={this.changeModalDataReference}
+  />
+  </div>
+)
+      
     return (
       <div>
         <TableControl
@@ -204,7 +226,7 @@ class ClientDeposit extends Component {
           handlePrevPage={this.handlePrevPage}
           handleNextPage={this.handleNextPage}
           loading={loading}
-          searchText={type === DEPOSIT_TYPES.CLIENTS ? 'Client Code' : 'Provider Name'}
+          searchText={type === DEPOSIT_TYPES.CLIENTS ? 'Order ID' : 'Provider Name'}
           disableSearch={type === DEPOSIT_TYPES.PROVIDERS}
           searchValue={params.code}
           changeSearch={this.changeSearch}
