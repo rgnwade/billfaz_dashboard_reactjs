@@ -27,7 +27,7 @@ class Login extends Component {
     }
     const token = getCookies(CONFIG_COOKIES.TOKEN)
     if (token) {
-      AuthApi.test()
+      AuthApi.login()
         .then(() => this.props.history.push(MENU.ORDER))
         .catch(() => {})
     }
