@@ -52,7 +52,7 @@ class Deposit extends Component {
 
   calculatePane = () => {
     const { type } = this.props.match.params
-    const panesAvailable = panes().filter(pane => hasAccess(pane.role))
+    const panesAvailable = panes() // .filter(pane => hasAccess(pane.role))
     if (type) {
       const pane = panesAvailable.find(paneAvailable => paneAvailable.key === type)
       if (pane && pane.key) return type
@@ -67,7 +67,7 @@ class Deposit extends Component {
         <div>
           <Tabs activeKey={activeKey} onChange={this.changeTab} className="custom__tabs">
             {
-              panes(activeKey).map(x => hasAccess(x.role) && (
+              panes(activeKey).map(x =>(
                 <Tabs.TabPane tab={x.title} key={x.key}>
                   <div className="app-content__tabs-content">
                     {x.content}
