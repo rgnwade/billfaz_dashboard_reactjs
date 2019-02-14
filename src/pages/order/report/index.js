@@ -1,24 +1,20 @@
 import React, { Component } from 'react'
 import { Button, Card, DatePicker, Modal, Select, message } from 'antd'
 
-import { ClientApi, OrderApi } from '../../../api'
+import { OrderApi } from '../../../api'
 import { getError } from '../../../utils/error/api'
+import { ORDER_REPORT_STATUS } from '../../../config/order'
 import './order-report.scss'
 
 class Report extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      clients: [],
       data: {
-        clientId: '',
+        status: '',
       },
       loading: false,
     }
-  }
-
-  componentDidMount() {
-    this.getFilterData()
   }
 
   clickSendReport = async () => {
@@ -31,7 +27,7 @@ class Report extends Component {
       onOk() {
         const payload = {
           filterType: 'period',
-          clientId: data.clientId || '',
+          status: data.status || '',
           startDate: data.startDate ? data.startDate.format('YYYY-MM-DD') : '',
           endDate: data.endDate ? data.endDate.format('YYYY-MM-DD') : '',
         }
@@ -53,30 +49,20 @@ class Report extends Component {
     this.setState({ ...this.state, data: { ...data, [field]: value } })
   }
 
-  getFilterData = () => {
-    ClientApi.getAll()
-      .then((res) => {
-        const clients = res.data.clients || []
-        clients.unshift({ id: '', name: 'All Clients' })
-        this.setState({ ...this.state, clients })
-      })
-      .catch(() => {})
-  }
-
   render() {
-    const { clients, data, loading } = this.state
+    const { data, loading } = this.state
     return (
       <div className="order-report">
         <Card>
           <div className="order-report__content">
             <div className="flex">
               <div style={{ marginRight: '1em' }}>
-                <label className="small-text">Client:</label>
+                <label className="small-text">Status:</label>
                 <div>
-                  <Select defaultValue="" value={data.clientId} style={{ width: 150 }} onChange={e => this.changeInput(e, 'clientId')}>
+                  <Select defaultValue="" value={data.status} style={{ width: 150 }} onChange={e => this.changeInput(e, 'status')}>
                     {
-                      clients.map(client => (
-                        <Select.Option key={client.id} value={client.id}>{client.name}</Select.Option>
+                      ORDER_REPORT_STATUS.map(status => (
+                        <Select.Option key={status.code} value={status.code}>{status.name}</Select.Option>
                       ))
                     }
                   </Select>
@@ -105,7 +91,7 @@ class Report extends Component {
               onClick={this.clickSendReport}
               disabled={!(data.startDate && data.endDate)}
             >
-              SEND REPORT
+              EXPORT DATA
             </Button>
           </div>
         </Card>

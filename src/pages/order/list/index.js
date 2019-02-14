@@ -117,18 +117,14 @@ class OrderList extends Component {
 
   getData = async (params = this.state.params) => {
     await this.setState({ ...this.state, loading: true })
-    Promise.all([
-      OrderApi.get(params),
-      OrderApi.getTotal(),
-    ])
+    OrderApi.get(params)
       .then((res) => {
         this.setState({
           ...this.state,
-          data: res[0].data,
-          total: res[1].data,
+          data: res.data,
           loading: false,
           params,
-          valPerPage: (res[0].data || []).length,
+          valPerPage: (res.data || []).length,
         })
       })
       .catch(() => {
@@ -187,7 +183,7 @@ class OrderList extends Component {
           <Table
             className="table-responsive"
             loading={loading}
-            rowKey="id"
+            rowKey="orderId"
             dataSource={data}
             columns={columns(this.goToDetail, this.clickAdvice, this.openModal)}
             pagination={false}
