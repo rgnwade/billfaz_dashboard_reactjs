@@ -37,3 +37,15 @@
 .small-text{
   margin: 15px !important;
 }
+
+.app__status.--deposit{
+  background-color: #a1cd43;
+}
+
+.app__status.--transaction{
+  background-color: #eaa844;
+}
+
+.app__status.--refund{
+  background-color: #e17273;
+}

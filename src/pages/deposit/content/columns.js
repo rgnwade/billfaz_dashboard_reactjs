@@ -1,44 +1,44 @@
 import React from 'react'
 import { Button,Tooltip } from 'antd'
-
 import { DEPOSIT_TYPES } from '../../../config/deposit'
 import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { numberToMoney } from '../../../utils/formatter/currency'
+import '../deposit.scss'
 
 const columnFields = {
   createdDate: {
     title: 'Created Date',
-    dataIndex: 'createddate',
-    key: 'createdDate',
+    dataIndex:'createdAt',
+    key:'createdAt',
     render: text => (
       <div>{datetimeToLocal(text)}</div>
     ),
   },
   transaction: {
     title: 'Order ID',
-    dataIndex: 'transaction',
-    key: 'transactionID',
+    dataIndex:'orderId',
+    key:'orderId',
     render: text => (
-      <div>{text && text.name}</div>
+      <div>{text}</div>
     ),
   },
   amount: {
     title: 'Amount',
-    dataIndex: 'amount',
-    key: 'amountID',
+    dataIndex:'amount',
+    key:'amount',
     render: text => (
-      <div>{text && text.name}</div>
+      <div>{text}</div>
     ),
   },
-  providerClientCode: {
-    title: 'Provider',
-    dataIndex: 'provider',
-    key: 'providerClientCode',
-  },
+  // providerClientCode: {
+  //   title: 'Provider',
+  //   dataIndex: 'provider',
+  //   key: 'providerClientCode',
+  // },
   balanceBefore: {
     title: 'Balance Before',
-    dataIndex: 'balanceBefore',
-    key: 'balanceBefore',
+    dataIndex:'balanceBefore',
+    key:'balanceBefore',
     render: text => (
       <div>{numberToMoney(text)}</div>
     ),
@@ -63,11 +63,11 @@ const columnFields = {
   // }),
   operation: {
     title: 'Operation',
-    dataIndex: 'operation',
-    key: 'status',
+    dataIndex: 'action',
+    key: 'action',
     render: operation => (
       <div style={{ width: '150px' }}>
-        <span className={`app__status --${operation ? 'active' : 'inactive'}`}>{operation ? 'Active' : 'Inactive'}</span>
+        <span className={`app__status --${operation ? 'deposit' : 'refund'}`}>{operation}</span>
       </div>
     ),
   }

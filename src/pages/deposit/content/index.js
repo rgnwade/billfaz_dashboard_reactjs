@@ -86,7 +86,7 @@ class ClientDeposit extends Component {
     await this.setState({ ...this.state, loading: true })
     DepositApi.get(type, params)
       .then((res) => {
-        const data = type === DEPOSIT_TYPES.CLIENTS ? res.data.deposits : res.data
+        const data = res.data
         this.setState({
           ...this.state,
           data: data || [],
@@ -159,6 +159,7 @@ class ClientDeposit extends Component {
 
 
   render() {
+
     const { loading, size, data, params, valPerPage, modal, modalData, selected } = this.state
     const { type } = this.props
     const leftFilter = (
