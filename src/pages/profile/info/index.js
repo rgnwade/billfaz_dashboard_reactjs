@@ -14,11 +14,7 @@ class ProfileInfo extends Component {
     const { data, loading } = this.state
     return (
       <div>
-        <div>
-          <h2>Sales Profile</h2>
-          <label>Profile Picture</label>
-          <div className="profile__picture" />
-        </div>
+        <h2>Personal Information</h2>
         <Form onSubmit={this.submitProfile} className="custom-form">
           <Form.Item>
             <div>
@@ -33,32 +29,32 @@ class ProfileInfo extends Component {
           </Form.Item>
           <Form.Item>
             <div>
-              <label>Phone Number</label>
+              <label>Client Id</label>
             </div>
             <Input
-              required
-              value={data.phone}
-              onChange={e => this.changeInput(e, 'phone')}
-              style={{ width: 400 }}
-              type="tel"
-              pattern="^[0-9-+s()]*$"
-              title="Please enter valid phone number"
-            />
-          </Form.Item>
-          <Form.Item>
-            <div>
-              <label>Full Name</label>
-            </div>
-            <Input
-              required
-              value={data.fullname}
-              onChange={e => this.changeInput(e, 'fullname')}
+              disabled
+              value={data.username}
+              onChange={e => this.changeInput(e, 'username')}
               style={{ width: 400 }}
             />
           </Form.Item>
           <Form.Item>
             <div>
-              <label>Email</label>
+              <label>Main Email Address</label>
+            </div>
+            <Input
+              required
+              value={data.email}
+              onChange={e => this.changeInput(e, 'email')}
+              type="email"
+              style={{ width: 400 }}
+              pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+              title="Please enter valid email address"
+            />
+          </Form.Item>
+          <Form.Item>
+            <div>
+              <label>Finance Email Address</label>
             </div>
             <Input
               required
@@ -74,7 +70,6 @@ class ProfileInfo extends Component {
             <div className="profile__actions">
               <Divider />
               <div className="profile__actions-container">
-                <div />
                 <Button loading={loading} type="primary" htmlType="submit">
                   Save
                 </Button>

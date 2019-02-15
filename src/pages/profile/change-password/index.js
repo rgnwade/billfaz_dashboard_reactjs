@@ -15,20 +15,37 @@ class ChangePassword extends Component {
     const { data, viewPassword, loading } = this.state
     return (
       <div>
-        <h2>Set New Password</h2>
-        <p>
-          {data.ticketID
-            ? 'Please enter OTP code that has been sent to you'
-            : 'Please enter Your new password and verify the new password'}
-        </p>
+        <h2>Change Password</h2>
         <Form onSubmit={this.submitPassword} className="custom-form">
           {!data.ticketID && (
             <div>
               <Form.Item>
                 <div>
+                  <label>Current password</label>
+                </div>
+                <Input
+                  name="currPassword"
+                  required={!data.ticketID}
+                  value={data.password}
+                  onChange={e => this.changeInputPassword(e, 'currPassword')}
+                  type={viewPassword.password ? 'text' : 'password'}
+                  style={{ width: 400 }}
+                  addonAfter={
+                    <Icon
+                      type="eye"
+                      onClick={() => this.viewPassword('currPassword')}
+                    />
+                  }
+                  pattern=".{8,}"
+                  title="Minimum 8 characters"
+                />
+              </Form.Item>
+              <Form.Item>
+                <div>
                   <label>Your new password</label>
                 </div>
                 <Input
+                  name="password"
                   required={!data.ticketID}
                   value={data.password}
                   onChange={e => this.changeInputPassword(e, 'password')}
@@ -46,7 +63,7 @@ class ChangePassword extends Component {
               </Form.Item>
               <Form.Item>
                 <div>
-                  <label>Verify your new password</label>
+                  <label>Confirm New Password</label>
                 </div>
                 <Input
                   required={!data.ticketID}

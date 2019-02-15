@@ -34,6 +34,7 @@ class FormSignIn extends Component {
     const { clientId, username, password } = this.state
     const token = await AuthApi.login({ clientId, username, password })
       .then((res) => {
+        console.log(res.data)
         cookies.set(CONFIG_COOKIES.USERNAME, username)
         return res.data.token
       })

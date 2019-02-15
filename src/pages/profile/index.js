@@ -7,6 +7,8 @@ import AppProfile from '../../components/profile'
 import { BACK_TO_LOGIN } from '../../api'
 import ProfileInfo from './info'
 import ChangePassword from './change-password'
+import UserManagement from './user-management'
+import ApiKey from './api-key'
 import './profile.scss'
 
 export default class Profile extends Component {
@@ -40,10 +42,16 @@ export default class Profile extends Component {
                 selectedKeys={[selected]}
               >
                 <Menu.Item key="profile" onClick={() => this.changeSelected('profile')}>
-                  Sales Profile
+                  Profile
                 </Menu.Item>
                 <Menu.Item key="password" onClick={() => this.changeSelected('password')}>
                   Change Password
+                </Menu.Item>
+                <Menu.Item key="user-management" onClick={() => this.changeSelected('user-management')}>
+                  User Management
+                </Menu.Item>
+                <Menu.Item key="api-key" onClick={() => this.changeSelected('api-key')}>
+                  Api Key
                 </Menu.Item>
                 <Menu.Item key="logout" onClick={BACK_TO_LOGIN}>
                   Logout
@@ -59,6 +67,14 @@ export default class Profile extends Component {
                 {selected === 'password'
                   && (
                     <ChangePassword />
+                  )}
+                {selected === 'user-management'
+                  && (
+                    <UserManagement />
+                  )}
+                {selected === 'api-key'
+                  && (
+                    <ApiKey />
                   )}
               </div>
             </Card>
