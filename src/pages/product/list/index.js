@@ -44,7 +44,9 @@ const columnFields = {
     dataIndex:'active',
     key:'active',
     render: text => (
-      <div>{text}</div>
+      <div style={{ width: '150px' }}>
+        <span className={`app__status --${text ? 'deposit' : 'refund'}`}>{text ? 'Active':'Inactive'}</span>
+      </div>
     ),
   },
 
