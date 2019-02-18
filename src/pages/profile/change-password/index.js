@@ -7,8 +7,35 @@ class ChangePassword extends Component {
     this.state = {
       data: {},
       loading: false,
-      viewPassword: false,
+      viewPassword: {
+        oldPassword: false,
+        password: false,
+        repassword: false,
+      },
     }
+  }
+
+  changeInput = (e) => {
+    console.log(e.target.name, e.target.value)
+    const { data } = this.state
+    this.setState({
+      ...this.state,
+      data: {
+        ...data,
+        [e.target.name]: e.target.value,
+      }
+    })
+  }
+
+  viewPassword = (type) => {
+    const { viewPassword } = this.state
+    this.setState({
+      ...this.state,
+      viewPassword: {
+        ...viewPassword,
+        [type]: !viewPassword[type],
+      }
+    })
   }
 
   render() {
@@ -24,16 +51,16 @@ class ChangePassword extends Component {
                   <label>Current password</label>
                 </div>
                 <Input
-                  name="currPassword"
-                  required={!data.ticketID}
-                  value={data.password}
-                  onChange={e => this.changeInputPassword(e, 'currPassword')}
-                  type={viewPassword.password ? 'text' : 'password'}
+                  name="oldPassword"
+                  required
+                  value={data.oldPassword}
+                  onChange={this.changeInput}
+                  type={viewPassword.oldPassword ? 'text' : 'password'}
                   style={{ width: 400 }}
                   addonAfter={
                     <Icon
-                      type="eye"
-                      onClick={() => this.viewPassword('currPassword')}
+                      type={viewPassword.oldPassword ? 'eye-invisible' : 'eye'}
+                      onClick={() => this.viewPassword('oldPassword')}
                     />
                   }
                   pattern=".{8,}"
@@ -46,14 +73,14 @@ class ChangePassword extends Component {
                 </div>
                 <Input
                   name="password"
-                  required={!data.ticketID}
+                  required
                   value={data.password}
-                  onChange={e => this.changeInputPassword(e, 'password')}
+                  onChange={this.changeInput}
                   type={viewPassword.password ? 'text' : 'password'}
                   style={{ width: 400 }}
                   addonAfter={
                     <Icon
-                      type="eye"
+                      type={viewPassword.password ? 'eye-invisible' : 'eye'}
                       onClick={() => this.viewPassword('password')}
                     />
                   }
@@ -66,14 +93,15 @@ class ChangePassword extends Component {
                   <label>Confirm New Password</label>
                 </div>
                 <Input
-                  required={!data.ticketID}
+                  name="repassword"
+                  required
                   value={data.repassword}
-                  onChange={e => this.changeInputPassword(e, 'repassword')}
+                  onChange={this.changeInput}
                   type={viewPassword.repassword ? 'text' : 'password'}
                   style={{ width: 400 }}
                   addonAfter={
                     <Icon
-                      type="eye"
+                      type={viewPassword.repassword ? 'eye-invisible' : 'eye'}
                       onClick={() => this.viewPassword('repassword')}
                     />
                   }
@@ -90,7 +118,7 @@ class ChangePassword extends Component {
               <Input
                 required={data.ticketID}
                 value={data.otp}
-                onChange={e => this.changeInputPassword(e, 'otp')}
+                onChange={this.changeInput}
                 type="number"
                 style={{ width: 400 }}
               />

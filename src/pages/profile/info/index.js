@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Divider } from 'antd'
+import { Form, Input, Button, Divider, message } from 'antd'
+
+import { UserApi } from '../../../api'
 
 class ProfileInfo extends Component {
   constructor(props) {
@@ -8,6 +10,31 @@ class ProfileInfo extends Component {
       data: {},
       loading: false,
     }
+  }
+
+  componentDidMount() {
+    UserApi.get()
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          data: {
+            ...res.data.Client,
+            username: res.data.username,
+          }
+        })
+      })
+      .catch(() => message.error('Fetch data profile failed'))
+  }
+
+  changeInput = (e) => {
+    const { data } = this.state
+    this.setState({
+      ...this.state,
+      data: {
+        ...data,
+        [e.target.name]: e.target.value,
+      }
+    })
   }
 
   render() {
@@ -23,7 +50,7 @@ class ProfileInfo extends Component {
             <Input
               disabled
               value={data.username}
-              onChange={e => this.changeInput(e, 'username')}
+              onChange={this.changeInput}
               style={{ width: 400 }}
             />
           </Form.Item>
@@ -33,8 +60,8 @@ class ProfileInfo extends Component {
             </div>
             <Input
               disabled
-              value={data.username}
-              onChange={e => this.changeInput(e, 'username')}
+              value={data.id}
+              onChange={this.changeInput}
               style={{ width: 400 }}
             />
           </Form.Item>
@@ -44,8 +71,9 @@ class ProfileInfo extends Component {
             </div>
             <Input
               required
+              name="email"
               value={data.email}
-              onChange={e => this.changeInput(e, 'email')}
+              onChange={this.changeInput}
               type="email"
               style={{ width: 400 }}
               pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
@@ -58,8 +86,9 @@ class ProfileInfo extends Component {
             </div>
             <Input
               required
-              value={data.email}
-              onChange={e => this.changeInput(e, 'email')}
+              name="emailFinance"
+              value={data.emailFinance}
+              onChange={this.changeInput}
               type="email"
               style={{ width: 400 }}
               pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
