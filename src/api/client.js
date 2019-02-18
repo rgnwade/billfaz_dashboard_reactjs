@@ -5,6 +5,7 @@ export default ({ url, config, defaultParams }) => {
   return {
     get: params => axios.get(`${url}${endpoint}/list`, { ...config(), params: { ...defaultParams, ...params } }),
     getAll: () => axios.get(`${url}${endpoint}`, config()),
+    changeEmail: data => axios.patch(`${url}${endpoint}/changeEmail`, data, config()),
     create: data => axios.post(`${url}${endpoint}`, data, config()),
   }
 }

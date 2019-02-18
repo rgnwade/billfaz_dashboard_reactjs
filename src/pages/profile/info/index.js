@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Form, Input, Button, Divider, message } from 'antd'
 
-import { UserApi } from '../../../api'
+import { UserApi, ClientApi } from '../../../api'
+import { getError } from '../../../utils/error/api'
 
 class ProfileInfo extends Component {
   constructor(props) {
@@ -37,15 +38,32 @@ class ProfileInfo extends Component {
     })
   }
 
+  clickSave = async (e) => {
+    e.preventDefault()
+    await this.setState({ ...this.state, loading: true })
+    const { data } = this.state
+    const { email, financeEmail } = data
+    ClientApi.changeEmail({ email, financeEmail })
+      .then(() => {
+        message.success(`Update data success`)
+        this.setState({ ...this.state, loading: false })
+        this.getData()
+      })
+      .catch((err) => {
+        message.error(getError(err) || 'Update data failed')
+        this.setState({ ...this.state, loading: false })
+      })
+  }
+
   render() {
     const { data, loading } = this.state
     return (
       <div>
         <h2>Personal Information</h2>
-        <Form onSubmit={this.submitProfile} className="custom-form">
+        <Form onSubmit={this.clickSave} className="custom-form">
           <Form.Item>
             <div>
-              <label>Username</label>
+              <label className="small-text">Username</label>
             </div>
             <Input
               disabled
@@ -56,7 +74,7 @@ class ProfileInfo extends Component {
           </Form.Item>
           <Form.Item>
             <div>
-              <label>Client Id</label>
+              <label className="small-text">Client Id</label>
             </div>
             <Input
               disabled
@@ -67,7 +85,7 @@ class ProfileInfo extends Component {
           </Form.Item>
           <Form.Item>
             <div>
-              <label>Main Email Address</label>
+              <label className="small-text">Main Email Address</label>
             </div>
             <Input
               required
@@ -82,7 +100,7 @@ class ProfileInfo extends Component {
           </Form.Item>
           <Form.Item>
             <div>
-              <label>Finance Email Address</label>
+              <label className="small-text">Finance Email Address</label>
             </div>
             <Input
               required

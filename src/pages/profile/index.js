@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-import { Card, Menu } from 'antd'
+import { Card, Menu, message } from 'antd'
 import PropTypes from 'prop-types'
 
 import Main from '../../components/main'
 import Breadcrumb, { BreadcrumbItems } from '../../components/breadcrumb'
 import AppProfile from '../../components/profile'
-import { BACK_TO_LOGIN } from '../../api'
+import { BACK_TO_LOGIN, UserApi } from '../../api'
 import ProfileInfo from './info'
 import ChangePassword from './change-password'
 import UserManagement from './user-management'
 import ApiKey from './api-key'
 import { PROFILE_TYPES } from '../../config/profile'
+import MENU from '../../config/menu'
+import { getErrorMessage } from '../../utils/error/api'
 import './profile.scss'
-import MENU from '../../config/menu';
 
 class Profile extends Component {
   constructor(props) {
@@ -41,6 +42,12 @@ class Profile extends Component {
   changeSelected = (selected) => {
     this.props.history.push(`${MENU.PROFILE}/${selected}`)
     this.setState({ ...this.state, selected, dataPassword: {}, openResendOtp: false })
+  }
+
+  logout = () => {
+    UserApi.logout()
+      .then(() => BACK_TO_LOGIN())
+      .catch(err => message.error(getErrorMessage(err) || 'Logout failed. Please try again'))
   }
 
   render() {
@@ -76,7 +83,7 @@ class Profile extends Component {
                 <Menu.Item key="api-key" onClick={() => this.changeSelected(PROFILE_TYPES.API_KEY)}>
                   Api Key
                 </Menu.Item>
-                <Menu.Item key="logout" onClick={BACK_TO_LOGIN}>
+                <Menu.Item key="logout" onClick={this.logout}>
                   Logout
                 </Menu.Item>
               </Menu>

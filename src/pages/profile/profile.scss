@@ -54,3 +54,9 @@
 .profile form button[type='submit'], form input[type='submit'] {
   margin-top: 0;
 }
+
+.profile__api-key-info {
+  margin: 1em 0;
+  color: gray;
+  font-size: 1.1rem;
+}

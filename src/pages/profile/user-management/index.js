@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Table, message } from 'antd'
+import { Button, Divider, Form, Input, Modal, Table, message } from 'antd'
 
 import TableControl from '../../../components/table-control'
 import { UserApi } from '../../../api'
+import { getError, getErrorMessage } from '../../../utils/error/api'
 
 class UserManagement extends Component {
   constructor(props) {
@@ -12,10 +13,17 @@ class UserManagement extends Component {
       loading: false,
       params: {},
       valPerPage: 0,
+      modal: false,
+      modalData: {},
+      modalLoading: false,
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = async () => {
     await this.setState({ ...this.state, loading: true })
     UserApi.list('cs')
       .then((res) => {
@@ -27,8 +35,60 @@ class UserManagement extends Component {
       })
   }
 
+  changeInput = (e) => {
+    const { modalData } = this.state
+    this.setState({
+      ...this.state,
+      modalData: {
+        ...modalData,
+        [e.target.name]: e.target.value,
+      }
+    })
+  }
+
+  addUser = async (e) => {
+    e.preventDefault()
+    await this.setState({ ...this.state, modalLoading: true })
+    const { modalData} = this.state
+    UserApi.create({ ...modalData, roleId: [8] })
+      .then(() => {
+        message.success(`Credentials has been sent to user's email`)
+        this.setState({ ...this.state, modalLoading: false, modal: false })
+        this.getData()
+      })
+      .catch((err) => {
+        message.error(getError(err) || 'Add user failed')
+        this.setState({ ...this.state, modalLoading: false })
+      })
+  }
+
+  deleteUser = (id, username) => {
+    Modal.confirm({
+      title: 'Delete User',
+      content: `Do you want to delete user ${username}?`,
+      onOk() {
+        UserApi.delete(id)
+          .then(() => {
+            message.success('Delete user success')
+          })
+          .catch((err) => {
+            message.error(getErrorMessage(err) || 'Delete user failed')
+          })
+      },
+      onCancel() {},
+    })
+  }
+
+  openModal = () => {
+    this.setState({ ...this.state, modal: true })
+  }
+
+  closeModal = () => {
+    this.setState({ ...this.state, modal: false, modalData: {} })
+  }
+
   render() {
-    const { data, loading, params, valPerPage } = this.state
+    const { data, loading, modalLoading, params, modal, modalData, valPerPage } = this.state
     const columns = [{
       title: 'Username',
       dataIndex: 'username',
@@ -45,9 +105,9 @@ class UserManagement extends Component {
       ),
       dataIndex: 'id',
       key: 'id',
-      render: () => (
+      render: (id, record) => (
         <div className="flex-end">
-          <Button shape="circle" icon="close" size="small" />
+          <Button shape="circle" icon="close" size="small"  onClick={() => this.deleteUser(id, record.username)} />
         </div>
 
       ),
@@ -71,6 +131,54 @@ class UserManagement extends Component {
           columns={columns}
           pagination={false}
         />
+        <Modal
+          title="Add User"
+          visible={modal}
+          onOk={this.modalOk}
+          onCancel={this.closeModal}
+          footer={null}
+        >
+          <Form onSubmit={this.addUser} className="custom-form">
+            <Form.Item>
+              <div>
+                <label className="small-text">Username</label>
+              </div>
+              <Input
+                required
+                name="username"
+                value={modalData.username}
+                onChange={this.changeInput}
+              />
+            </Form.Item>
+            <Form.Item>
+              <div>
+                <label className="small-text">Email Address</label>
+              </div>
+              <Input
+                required
+                name="email"
+                value={modalData.email}
+                onChange={this.changeInput}
+                type="email"
+                pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                title="Please enter valid email address"
+              />
+            </Form.Item>
+            <Form.Item>
+              <div className="profile__actions">
+                <Divider />
+                <div className="profile__actions-container">
+                  <Button onClick={this.closeModal}>
+                    Cancel
+                  </Button>
+                  <Button loading={modalLoading} type="primary" htmlType="submit">
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     )
   }

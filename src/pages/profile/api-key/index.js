@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Table, message } from 'antd'
+import { Button, Modal, Table, message } from 'antd'
 
 import { UserApi } from '../../../api'
+import { getErrorMessage } from '../../../utils/error/api'
 
 class ApiKey extends Component {
   constructor(props) {
@@ -9,12 +10,17 @@ class ApiKey extends Component {
     this.state = {
       data: [],
       loading: false,
+      loadingCreate: false,
       params: {},
       valPerPage: 0,
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = async () => {
     await this.setState({ ...this.state, loading: true })
     UserApi.list('api')
       .then((res) => {
@@ -26,8 +32,39 @@ class ApiKey extends Component {
       })
   }
 
+  generateApiKey = async () => {
+    await this.setState({ ...this.state, loadingCreate: true })
+    UserApi.createApiKey()
+      .then(() => {
+        this.setState({ ...this.state, loadingCreate: false })
+        message.success('Generate api key success')
+        this.getData()
+      })
+      .catch((err) => {
+        this.setState({ ...this.state, loadingCreate: false })
+        message.error(getErrorMessage(err) || 'Generate api key failed')
+      })
+  }
+
+  deleteApiKey = (id, key) => {
+    Modal.confirm({
+      title: 'Delete Api Key',
+      content: `Do you want to delete api key ${key}?`,
+      onOk() {
+        UserApi.delete(id)
+          .then(() => {
+            message.success('Delete api key success')
+          })
+          .catch((err) => {
+            message.error(getErrorMessage(err) || 'Delete api key failed')
+          })
+      },
+      onCancel() {},
+    })
+  }
+
   render() {
-    const { data, loading } = this.state
+    const { data, loading, loadingCreate } = this.state
     const columns = [{
       title: 'Key',
       dataIndex: 'apiKey',
@@ -38,11 +75,11 @@ class ApiKey extends Component {
       key: 'role',
     }, {
       title: '',
-      dataIndex: 'address',
-      key: 'address',
-      render: () => (
+      dataIndex: 'id',
+      key: 'id',
+      render: (id, record) => (
         <div className="flex-end">
-          <Button shape="circle" icon="close" size="small" />
+          <Button shape="circle" icon="close" size="small" onClick={() => this.deleteApiKey(id, record.apiKey)} />
         </div>
 
       ),
@@ -57,6 +94,10 @@ class ApiKey extends Component {
           columns={columns}
           pagination={false}
         />
+        <div className="profile__api-key-info">*API Key Max 2</div>
+        <Button disabled={data && data.length > 1} type="primary" onClick={this.generateApiKey} loading={loadingCreate}>
+          Generate New API Key
+        </Button>
       </div>
     )
   }

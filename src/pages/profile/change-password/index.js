@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Divider, Icon } from 'antd'
+import { Form, Input, Button, Divider, Icon, message } from 'antd'
+
+import { UserApi } from '../../../api'
+import { getError } from '../../../utils/error/api'
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -16,7 +19,6 @@ class ChangePassword extends Component {
   }
 
   changeInput = (e) => {
-    console.log(e.target.name, e.target.value)
     const { data } = this.state
     this.setState({
       ...this.state,
@@ -38,6 +40,25 @@ class ChangePassword extends Component {
     })
   }
 
+  submitPassword = async (e) => {
+    e.preventDefault()
+    const { data } = this.state
+    if (data.password !== data.repassword) {
+      message.error(`Those passwords didn't match`)
+      return
+    }
+    await this.setState({ ...this.state, loading: true })
+    UserApi.changePassword(data)
+      .then(() => {
+        message.success('Change password success')
+        this.setState({ ...this.state, loading: false, data: {} })
+      })
+      .catch((err) => {
+        message.error(getError(err) || 'Change password failed')
+        this.setState({ ...this.state, loading: false })
+      })
+  }
+
   render() {
     const { data, viewPassword, loading } = this.state
     return (
@@ -48,7 +69,7 @@ class ChangePassword extends Component {
             <div>
               <Form.Item>
                 <div>
-                  <label>Current password</label>
+                  <label className="small-text">Current password</label>
                 </div>
                 <Input
                   name="oldPassword"
@@ -69,7 +90,7 @@ class ChangePassword extends Component {
               </Form.Item>
               <Form.Item>
                 <div>
-                  <label>Your new password</label>
+                  <label className="small-text">Your new password</label>
                 </div>
                 <Input
                   name="password"
@@ -90,7 +111,7 @@ class ChangePassword extends Component {
               </Form.Item>
               <Form.Item>
                 <div>
-                  <label>Confirm New Password</label>
+                  <label className="small-text">Confirm New Password</label>
                 </div>
                 <Input
                   name="repassword"
@@ -113,7 +134,7 @@ class ChangePassword extends Component {
           {data.ticketID && (
             <Form.Item>
               <div>
-                <label>Your OTP Code</label>
+                <label className="small-text">Your OTP Code</label>
               </div>
               <Input
                 required={data.ticketID}
