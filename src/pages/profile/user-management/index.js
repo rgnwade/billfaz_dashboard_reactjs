@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Table } from 'antd'
+import { Button, Table, message } from 'antd'
 
 import TableControl from '../../../components/table-control'
+import { UserApi } from '../../../api'
 
 class UserManagement extends Component {
   constructor(props) {
@@ -14,20 +15,42 @@ class UserManagement extends Component {
     }
   }
 
+  async componentDidMount() {
+    await this.setState({ ...this.state, loading: true })
+    UserApi.list('cs')
+      .then((res) => {
+        this.setState({ ...this.state, data: res.data, loading: false })
+      })
+      .catch(() => {
+        this.setState({ ...this.state, loading: false })
+        message.error('Fetch data users failed')
+      })
+  }
+
   render() {
     const { data, loading, params, valPerPage } = this.state
     const columns = [{
       title: 'Username',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'username',
+      key: 'username',
     }, {
       title: 'Role',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'role',
+      key: 'role',
     }, {
-      title: '',
-      dataIndex: 'address',
-      key: 'address',
+      title: (
+        <div className="flex-end">
+          <Button type="primary" icon="plus" onClick={this.openModal}>Add User</Button>
+        </div>
+      ),
+      dataIndex: 'id',
+      key: 'id',
+      render: () => (
+        <div className="flex-end">
+          <Button shape="circle" icon="close" size="small" />
+        </div>
+
+      ),
     }]
     return (
       <div>
@@ -43,7 +66,7 @@ class UserManagement extends Component {
         <Table
           className="table-responsive"
           loading={loading}
-          rowKey="orderId"
+          rowKey="id"
           dataSource={data}
           columns={columns}
           pagination={false}

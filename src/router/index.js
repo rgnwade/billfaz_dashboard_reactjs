@@ -30,6 +30,7 @@ const RouteConfig = (
         <PrivateRoute exact path={`${MENU.PRODUCT}/:type`} component={Product} />
         <PrivateRoute exact path={`${MENU.PRODUCT}/clients/:clientId/detail/:id`} component={ProductClientDetail} />
         <PrivateRoute exact path={MENU.PROFILE} component={Profile} />
+        <PrivateRoute exact path={`${MENU.PROFILE}/:type`} component={Profile} />
         <Route component={Page404} />
       </Switch>
     </div>
