@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 export default ({ url, config, defaultParams }) => {
-  const endpoint = 'v1/products'
+  const endpoint = 'v1/products/client'
   const endpointClientProducts = 'v1/clientproducts'
   return {
     // products
-    get: params => axios.get(`${url}${endpoint}/provider`, { ...config(), params: { ...defaultParams, ...params } }),
+    get: params => axios.get(`${url}${endpoint}`, { ...config(), params: { ...defaultParams, ...params } }),
     getOne: id => axios.get(`${url}${endpoint}/${id}`, config()),
     update: (id, data) => axios.post(`${url}${endpoint}/${id}/update`, data, config()),
     getAvailableProducts: clientId => axios.get(`${url}${endpoint}/available?clientId=${clientId}`, config()),

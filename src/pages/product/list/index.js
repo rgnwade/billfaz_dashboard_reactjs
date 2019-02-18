@@ -14,69 +14,47 @@ import { hasAccess } from '../../../utils/roles'
 import { ROLES_ITEMS } from '../../../config/roles'
 import './product-list.scss'
 
-const dataSource = [
-  {
-    key: '1',
-    product_name_code: 'Telkomsel 5000 [TLKM5]',
-    product_description: 'Pulsa reguler Rp. 5000',
-    price: 'Rp. 4.850',
-    status: 'Active',
+const columnFields = {
+  productName: {
+    title: 'Product Name & Code',
+    dataIndex:'name',
+    key:'name',
+    render: text => (
+      <div>{text}</div>
+    ),
   },
-  {
-    key: '2',
-    product_name_code: 'Telkomsel 5000 [TLKM5]',
-    product_description: 'Pulsa reguler Rp. 5000',
-    price: 'Rp. 4.850',
-    status: 'Inactive',
+  productDescription: {
+    title: 'Product Description',
+    dataIndex:'description',
+    key:'description',
+    render: text => (
+      <div>{text}</div>
+    ),
   },
-  {
-    key: '3',
-    product_name_code: 'Telkomsel 5000 [TLKM5]',
-    product_description: 'Pulsa reguler Rp. 5000',
-    price: 'Rp. 4.850',
-    status: 'Inactive',
+  price: {
+    title: 'Price',
+    dataIndex:'sellPrice',
+    key:'sellPrice',
+    render: text => (
+      <div>{text}</div>
+    ),
   },
-  {
-    key: '4',
-    product_name_code: 'Telkomsel 5000 [TLKM5]',
-    product_description: 'Pulsa reguler Rp. 5000',
-    price: 'Rp. 4.850',
-    status: 'Active',
+  status: {
+    title: 'Status',
+    dataIndex:'active',
+    key:'active',
+    render: text => (
+      <div>{text}</div>
+    ),
   },
-  {
-    key: '5',
-    product_name_code: 'Telkomsel 5000 [TLKM5]',
-    product_description: 'Pulsa reguler Rp. 5000',
-    price: 'Rp. 4.850',
-    status: 'Active',
-  },
-];
+
+}
 
 const columns = [
-  {
-    title: 'Product Name & Code',
-    dataIndex: 'product_name_code',
-    key: 'product_name_code',
-  }, 
-  {
-    title: 'Product Description',
-    dataIndex: 'product_description',
-    key: 'product_description',
-  }, 
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: tag => {
-      let color = tag === 'Inactive' ? '#f16a70' : '#a1cd43'
-      return <Tag color={color} key={tag}>{tag}</Tag>
-    }
-  }
+columnFields.productName,
+columnFields.productDescription,
+columnFields.price,
+columnFields.status
 ];
 
 class ProductList extends Component {
@@ -187,7 +165,7 @@ class ProductList extends Component {
   }
 
   render() {
-    const { loading, params, valPerPage } = this.state
+    const { loading, data, params, valPerPage } = this.state
     const leftFilter = (
       <div className="flex">
         <div style={{ marginRight: '1em' }}>
@@ -222,7 +200,7 @@ class ProductList extends Component {
           <Table 
             className="table-responsive --big" 
             loading={loading} 
-            dataSource={dataSource} 
+            dataSource={data}
             columns={columns} 
             pagination={false} 
           />
