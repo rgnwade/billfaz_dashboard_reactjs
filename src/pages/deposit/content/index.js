@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Card, Table, message, Button, Row, Col, Select, DatePicker, TimePicker, Modal} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-
+import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
 import TableControl from '../../../components/table-control'
 import moment from 'moment'
 import Filter from '../../../components/filter'
@@ -84,6 +84,7 @@ class ClientDeposit extends Component {
   getData = async (params = this.state.params) => {
     const { type } = this.props
     await this.setState({ ...this.state, loading: true })
+    if (params.action === '') delete params.action
     DepositApi.get(type, params)
       .then((res) => {
         const data = res.data
@@ -99,6 +100,11 @@ class ClientDeposit extends Component {
       .catch(() => {
         this.setState({ ...this.state, loading: false })
       })
+  }
+
+  changeFilter = (value, field) => {
+    const { params } = this.state
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: value })
   }
 
   changeSearch = (e) => {
@@ -165,15 +171,16 @@ class ClientDeposit extends Component {
     const leftFilter = (
       <div className="flex">
          <div>
-          <label className="small-text">Provider:</label>
-              <div>
-              <Select defaultValue="lucy" style={{ width: 120 }} onChange={handleChange}>
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="disabled" disabled>Disabled</Option>
-              <Option value="Yiminghe">yiminghe</Option>
-              </Select>
-              </div>
+          <label className="small-text">Operation:</label>
+          <div>
+            <Select value={params.action || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'action')}>
+              {
+                OPTIONS_CONFIG_DEPOSIT.map(option => (
+                  <Select.Option key={option.id} value={option.id}>{option.name}</Select.Option>
+                ))
+              }
+            </Select>
+          </div>
         </div>
         <div>
         <label className="small-text">Provider:</label>

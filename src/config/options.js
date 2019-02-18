@@ -13,6 +13,22 @@ export const OPTIONS_CONFIG_ACTIVE = [
   },
 ]
 
+export const OPTIONS_CONFIG_DEPOSIT = [
+  {
+    id: '',
+    name: 'All',
+  }, {
+    id: 'payment',
+    name: 'Payment',
+  }, {
+    id: 'refund',
+    name: 'Refund',
+  }, {
+    id: 'topup',
+    name: 'Top up',
+  },
+]
+
 export const OPTIONS_CONFIG_PROBLEM = [
   {
     id: '',
