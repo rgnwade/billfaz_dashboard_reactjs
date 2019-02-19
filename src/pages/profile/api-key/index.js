@@ -76,7 +76,7 @@ class ApiKey extends Component {
       key: 'createdAt',
       render: createdAt => (
         <div>{datetimeToLocal(createdAt)}</div>
-      )
+      ),
     }, {
       title: '',
       dataIndex: 'id',

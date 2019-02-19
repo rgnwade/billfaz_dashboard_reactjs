@@ -21,7 +21,7 @@ class ProfileInfo extends Component {
           data: {
             ...res.data.Client,
             username: res.data.username,
-          }
+          },
         })
       })
       .catch(() => message.error('Fetch data profile failed'))
@@ -34,7 +34,7 @@ class ProfileInfo extends Component {
       data: {
         ...data,
         [e.target.name]: e.target.value,
-      }
+      },
     })
   }
 
@@ -45,7 +45,7 @@ class ProfileInfo extends Component {
     const { email, financeEmail } = data
     ClientApi.changeEmail({ email, financeEmail })
       .then(() => {
-        message.success(`Update data success`)
+        message.success('Update data success')
         this.setState({ ...this.state, loading: false })
         this.getData()
       })

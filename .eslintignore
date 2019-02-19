@@ -1,0 +1,15 @@
+src/registerServiceWorker.js
+custom-sw.js
+src/app/assets/icons/**/*.js
+src/**/*.test.js
+src/*.test.js
+src/setupTests.js
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/build

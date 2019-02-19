@@ -42,17 +42,17 @@ class UserManagement extends Component {
       modalData: {
         ...modalData,
         [e.target.name]: e.target.value,
-      }
+      },
     })
   }
 
   addUser = async (e) => {
     e.preventDefault()
     await this.setState({ ...this.state, modalLoading: true })
-    const { modalData} = this.state
+    const { modalData } = this.state
     UserApi.create({ ...modalData, roleId: [8] })
       .then(() => {
-        message.success(`Credentials has been sent to user's email`)
+        message.success('Credentials has been sent to user\'s email')
         this.setState({ ...this.state, modalLoading: false, modal: false })
         this.getData()
       })
@@ -107,7 +107,7 @@ class UserManagement extends Component {
       key: 'id',
       render: (id, record) => (
         <div className="flex-end">
-          <Button shape="circle" icon="close" size="small"  onClick={() => this.deleteUser(id, record.username)} />
+          <Button shape="circle" icon="close" size="small" onClick={() => this.deleteUser(id, record.username)} />
         </div>
 
       ),

@@ -25,7 +25,7 @@ class ChangePassword extends Component {
       data: {
         ...data,
         [e.target.name]: e.target.value,
-      }
+      },
     })
   }
 
@@ -36,7 +36,7 @@ class ChangePassword extends Component {
       viewPassword: {
         ...viewPassword,
         [type]: !viewPassword[type],
-      }
+      },
     })
   }
 
@@ -44,7 +44,7 @@ class ChangePassword extends Component {
     e.preventDefault()
     const { data } = this.state
     if (data.password !== data.repassword) {
-      message.error(`Those passwords didn't match`)
+      message.error('Those passwords didn\'t match')
       return
     }
     await this.setState({ ...this.state, loading: true })
@@ -78,12 +78,12 @@ class ChangePassword extends Component {
                   onChange={this.changeInput}
                   type={viewPassword.oldPassword ? 'text' : 'password'}
                   style={{ width: 400 }}
-                  addonAfter={
+                  addonAfter={(
                     <Icon
                       type={viewPassword.oldPassword ? 'eye-invisible' : 'eye'}
                       onClick={() => this.viewPassword('oldPassword')}
                     />
-                  }
+                  )}
                   pattern=".{8,}"
                   title="Minimum 8 characters"
                 />
@@ -99,12 +99,12 @@ class ChangePassword extends Component {
                   onChange={this.changeInput}
                   type={viewPassword.password ? 'text' : 'password'}
                   style={{ width: 400 }}
-                  addonAfter={
+                  addonAfter={(
                     <Icon
                       type={viewPassword.password ? 'eye-invisible' : 'eye'}
                       onClick={() => this.viewPassword('password')}
                     />
-                  }
+                  )}
                   pattern=".{8,}"
                   title="Minimum 8 characters"
                 />
@@ -120,12 +120,12 @@ class ChangePassword extends Component {
                   onChange={this.changeInput}
                   type={viewPassword.repassword ? 'text' : 'password'}
                   style={{ width: 400 }}
-                  addonAfter={
+                  addonAfter={(
                     <Icon
                       type={viewPassword.repassword ? 'eye-invisible' : 'eye'}
                       onClick={() => this.viewPassword('repassword')}
                     />
-                  }
+                  )}
                 />
                 <div className="form__field-error">{data.error}</div>
               </Form.Item>
