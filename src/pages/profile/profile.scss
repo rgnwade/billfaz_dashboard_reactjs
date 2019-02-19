@@ -1,3 +1,4 @@
+@import '../../config/_global.scss';
 .profile .app-content {
   display: flex;
   justify-content: center;
@@ -11,6 +12,23 @@
   width: calc(30% - 1em);
   margin-right: 1em !important;
   height: 100%;
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    color: $primary-color;
+    background-color: $primary-light-color;
+  }
+  .ant-menu-vertical .ant-menu-item:after,
+  .ant-menu-vertical-left .ant-menu-item:after,
+  .ant-menu-vertical-right .ant-menu-item:after,
+  .ant-menu-inline .ant-menu-item:after {
+    border-right: 3px solid $primary-color;
+  }
+  .ant-menu-item:hover,
+  .ant-menu-item-active,
+  .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+  .ant-menu-submenu-active,
+  .ant-menu-submenu-title:hover {
+    color: $primary-color;
+  }
 }
 
 .profile__content {
@@ -51,7 +69,8 @@
   margin: 1em 0;
 }
 
-.profile form button[type='submit'], form input[type='submit'] {
+.profile form button[type='submit'],
+form input[type='submit'] {
   margin-top: 0;
 }
 

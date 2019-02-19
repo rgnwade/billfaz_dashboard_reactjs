@@ -42,12 +42,11 @@ class ProfileInfo extends Component {
     e.preventDefault()
     await this.setState({ ...this.state, loading: true })
     const { data } = this.state
-    const { email, financeEmail } = data
-    ClientApi.changeEmail({ email, financeEmail })
+    const { email, emailFinance } = data
+    ClientApi.changeEmail({ email, emailFinance })
       .then(() => {
         message.success('Update data success')
         this.setState({ ...this.state, loading: false })
-        this.getData()
       })
       .catch((err) => {
         message.error(getError(err) || 'Update data failed')

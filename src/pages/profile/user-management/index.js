@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Divider, Form, Input, Modal, Table, message } from 'antd'
 
-import TableControl from '../../../components/table-control'
 import { UserApi } from '../../../api'
 import { getError, getErrorMessage } from '../../../utils/error/api'
 
@@ -25,7 +24,7 @@ class UserManagement extends Component {
 
   getData = async () => {
     await this.setState({ ...this.state, loading: true })
-    UserApi.list('cs')
+    UserApi.list()
       .then((res) => {
         this.setState({ ...this.state, data: res.data, loading: false })
       })
@@ -63,6 +62,7 @@ class UserManagement extends Component {
   }
 
   deleteUser = (id, username) => {
+    const thisEl = this
     Modal.confirm({
       title: 'Delete User',
       content: `Do you want to delete user ${username}?`,
@@ -70,6 +70,7 @@ class UserManagement extends Component {
         UserApi.delete(id)
           .then(() => {
             message.success('Delete user success')
+            thisEl.getData()
           })
           .catch((err) => {
             message.error(getErrorMessage(err) || 'Delete user failed')
@@ -80,7 +81,7 @@ class UserManagement extends Component {
   }
 
   openModal = () => {
-    this.setState({ ...this.state, modal: true })
+    this.setState({ ...this.state, modal: true, modalData: {} })
   }
 
   closeModal = () => {
@@ -88,7 +89,7 @@ class UserManagement extends Component {
   }
 
   render() {
-    const { data, loading, modalLoading, params, modal, modalData, valPerPage } = this.state
+    const { data, loading, modalLoading, modal, modalData } = this.state
     const columns = [{
       title: 'Username',
       dataIndex: 'username',
@@ -115,14 +116,6 @@ class UserManagement extends Component {
     return (
       <div>
         <h2 style={{ marginBottom: 0 }}>User Management</h2>
-        <TableControl
-          disableSearch
-          valPage={params.page}
-          valPerPage={valPerPage}
-          handlePrevPage={this.handlePrevPage}
-          handleNextPage={this.handleNextPage}
-          loading={loading}
-        />
         <Table
           className="table-responsive"
           loading={loading}

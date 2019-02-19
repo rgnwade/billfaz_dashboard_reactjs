@@ -48,6 +48,7 @@ class ApiKey extends Component {
   }
 
   deleteApiKey = (id, key) => {
+    const thisEl = this
     Modal.confirm({
       title: 'Delete Api Key',
       content: `Do you want to delete api key ${key}?`,
@@ -55,6 +56,7 @@ class ApiKey extends Component {
         UserApi.delete(id)
           .then(() => {
             message.success('Delete api key success')
+            thisEl.getData()
           })
           .catch((err) => {
             message.error(getErrorMessage(err) || 'Delete api key failed')
