@@ -17,6 +17,49 @@ import MENU from '../../../config/menu'
 import { hasAccess } from '../../../utils/roles'
 import { ROLES_ITEMS } from '../../../config/roles'
 
+
+class FormExport extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      action: '',
+      dateStart: '',
+      timeStart: '',
+      dateEnd: '',
+      timeEnd: '',
+    }
+  }
+  changeAction = e => this.setState({ action: e.target.value })
+
+  changeDateStart = e => this.setState({ dateStart: e.target.value })
+
+  changeTimeStart = e => this.setState({ timeStart: e.target.value })
+
+  changeDateEnd= e => this.setState({ dateEnd: e.target.value })
+
+  changeTimeEnd = e => this.setState({ timeEnd: e.target.value })
+
+
+  submitExport = async (e) => {
+    e.preventDefault()
+    await this.setState({ ...this.state, loading: true })
+    const { action, dateStart, timeStart, dateEnd, timeEnd  } = this.state
+    const ex = await DepositApi.exportData({ action, dateStart, timeStart, dateEnd, timeEnd} )
+      .then((res) => {
+        return res.data.ex
+      })
+      .catch((err) => {
+        this.setState({ ...this.state, loading: false })
+        message.error(getErrorMessage(err) || 'Export Failed')
+        return false
+      })
+    if (ex) {
+      await this.getPermission()
+      this.props.history.push(MENU.ORDER)
+    }
+  }
+}
+
 const Option = Select.Option;
 function handleChange(value) {
   console.log(`selected ${value}`);
@@ -48,7 +91,6 @@ class ClientDeposit extends Component {
   }
 
  
-
   componentDidMount() {
     const { location } = this.props
     this.getData(parseUrlQueryParams(location.search))
@@ -240,7 +282,6 @@ class ClientDeposit extends Component {
           changeSearch={this.changeSearch}
         />
        
-  
        <Row>
        <Col span={24}>
           
@@ -285,8 +326,6 @@ class ClientDeposit extends Component {
             pagination={false}
           />
         </Card>
-
-    
       </div>
     )
   }
