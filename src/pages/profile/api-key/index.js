@@ -3,6 +3,7 @@ import { Button, Modal, Table, message } from 'antd'
 
 import { UserApi } from '../../../api'
 import { getErrorMessage } from '../../../utils/error/api'
+import { datetimeToLocal } from '../../../utils/formatter/datetime'
 
 class ApiKey extends Component {
   constructor(props) {
@@ -71,8 +72,11 @@ class ApiKey extends Component {
       key: 'apiKey',
     }, {
       title: 'Created At',
-      dataIndex: 'role',
-      key: 'role',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: createdAt => (
+        <div>{datetimeToLocal(createdAt)}</div>
+      )
     }, {
       title: '',
       dataIndex: 'id',

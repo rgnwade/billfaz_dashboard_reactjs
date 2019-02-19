@@ -95,7 +95,7 @@ class UserManagement extends Component {
       key: 'username',
     }, {
       title: 'Role',
-      dataIndex: 'role',
+      dataIndex: 'roleName',
       key: 'role',
     }, {
       title: (
