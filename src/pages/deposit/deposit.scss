@@ -38,14 +38,29 @@
   margin: 15px !important;
 }
 
-.app__status.--deposit{
+.apps__status.--payment{
   background-color: #a1cd43;
+  padding: 0.25em 1em;
+border-radius: 4px;
+color: white;
+text-transform: capitalize;
+margin-right: 2px;
 }
 
-.app__status.--transaction{
+.apps__status.--topup{
   background-color: #eaa844;
+  padding: 0.25em 1em;
+border-radius: 4px;
+color: white;
+text-transform: capitalize;
+margin-right: 2px;
 }
 
-.app__status.--refund{
+.apps__status.--refund{
   background-color: #e17273;
+  padding: 0.25em 1em;
+border-radius: 4px;
+color: white;
+text-transform: capitalize;
+margin-right: 2px;
 }

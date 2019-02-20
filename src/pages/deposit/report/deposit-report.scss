@@ -1,0 +1,50 @@
+@import '../../../config/_global.scss';
+
+.order-report {
+  padding: 0 0 1em 0;
+}
+
+.order-report__btn-group {
+  margin-left: 1em;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.05);
+  button {
+    border: 0;
+    outline: 0;
+    padding: 1em 1.5em !important;
+    height: auto !important;
+    &:hover, &:active, &:focus {
+      color: $primary-color;
+    }
+    &.--active {
+      background: $primary-color;
+      color: white !important;
+    }
+  }
+  .ant-btn:first-child:not(:last-child), span:first-child:not(:last-child) > .ant-btn {
+    border-bottom-left-radius: 8px !important;
+    border-top-left-radius: 8px !important;
+  }
+  .ant-btn:last-child:not(:first-child), span:last-child:not(:first-child) > .ant-btn {
+    border-bottom-right-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+  }
+}
+
+.order-report__filter {
+  margin-bottom: 2em;
+}
+
+.order-report__content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-report__search {
+  input {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    height: auto !important;
+  }
+}

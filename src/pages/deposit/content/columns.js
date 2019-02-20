@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button,Tooltip } from 'antd'
+import { Button } from 'antd'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
 import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { numberToMoney } from '../../../utils/formatter/currency'
@@ -10,8 +10,8 @@ const columnFields = {
     title: 'Created Date',
     dataIndex:'createdAt',
     key:'createdAt',
-    render: text => (
-      <div>{datetimeToLocal(text)}</div>
+    render: (text)  => (
+      <div>{(text)}</div>
     ),
   },
   transaction: {
@@ -65,10 +65,10 @@ const columnFields = {
     title: 'Operation',
     dataIndex: 'action',
     key: 'action',
-    render: operation => (
+    render: (text, record) => (
       <div style={{ width: '150px' }}>
-        <span className={`app__status --${operation ? 'deposit' : 'refund'}`}>{operation}</span>
-      </div>
+      <span className={`apps__status --${text}`}>{text}</span>
+    </div>
     ),
   }
   

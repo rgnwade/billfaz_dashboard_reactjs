@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Table, message, Button, Row, Col, Select, DatePicker, TimePicker, Modal} from 'antd'
+import { Card, Table, message, Button, Row, Col, Select, DatePicker, TimePicker, Modal, Form, Input} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
@@ -16,6 +16,7 @@ import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../.
 import MENU from '../../../config/menu'
 import { hasAccess } from '../../../utils/roles'
 import { ROLES_ITEMS } from '../../../config/roles'
+import DepositReport from '../report'
 
 
 class FormExport extends Component {
@@ -208,67 +209,13 @@ class ClientDeposit extends Component {
 
   render() {
 
-    const { loading, size, data, params, valPerPage, modal, modalData, selected } = this.state
+    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd } = this.state
     const { type } = this.props
-    const leftFilter = (
-      <div className="flex">
-         <div>
-          <label className="small-text">Operation:</label>
-          <div>
-            <Select value={params.action || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'action')}>
-              {
-                OPTIONS_CONFIG_DEPOSIT.map(option => (
-                  <Select.Option key={option.id} value={option.id}>{option.name}</Select.Option>
-                ))
-              }
-            </Select>
-          </div>
-        </div>
-        <div>
-        <label className="small-text">Provider:</label>
-            <div>
-             <DatePicker onChange={onChange} />
-           </div>
-        </div>
-        <div>
-        <label className="small-text">Provider:</label>
-            <div>
-         <TimePicker defaultValue={moment('12:08', format)} format={format} />
-         </div>
-        </div>
-        <a class="total">To</a>
-        <div>
-        <label className="small-text">Provider:</label>
-            <div>
-             <DatePicker onChange={onChange} />
-           </div>
-        </div>
-        <div>
-        <label className="small-text">Provider:</label>
-            <div>
-         <TimePicker defaultValue={moment('12:08', format)} format={format} />
-         </div>
-        </div>
-    </div>
-    )
-
-    const rightFilter = (
-<div>
-    <Button htmlType="submit" className="btn-oval" onClick={this.openModal} loading={loading} type="primary">EXPORT DATA</Button>
-   
-    <TopupModal
-    visible={modal}
-    modalOk={this.clickChangeStatus}
-    modalClose={this.closeModal}
-    data={modalData}
-    changeStatus={this.changeModalDataStatus}
-    changeReferenceNumber={this.changeModalDataReference}
-  />
-  </div>
-)
+ 
       
     return (
       <div>
+     
         <TableControl
           search={this.search}
           valPage={params.page}
@@ -313,8 +260,8 @@ class ClientDeposit extends Component {
            </Row>
 
 
-           <Filter left={leftFilter} right={rightFilter}/>
-    
+           {/* <Filter left={leftFilter} right={rightFilter}/> */}
+           <DepositReport />
 
         <Card>
           <Table

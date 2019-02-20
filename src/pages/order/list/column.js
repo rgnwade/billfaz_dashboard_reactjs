@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from 'antd'
-
 import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { ROLES_ITEMS } from '../../../config/roles'
 import Role from '../../../components/role'
