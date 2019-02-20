@@ -114,8 +114,8 @@ class UserManagement extends Component {
       ),
     }]
     return (
-      <div>
-        <h2 style={{ marginBottom: 0 }}>User Management</h2>
+      <div style={{ marginBottom: '2em' }}>
+        <h2>User Management</h2>
         <Table
           className="table-responsive"
           loading={loading}

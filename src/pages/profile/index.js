@@ -3,7 +3,7 @@ import { Card, Menu, message } from 'antd'
 import PropTypes from 'prop-types'
 
 import Main from '../../components/main'
-import Breadcrumb, { BreadcrumbItems } from '../../components/breadcrumb'
+// import Breadcrumb, { BreadcrumbItems } from '../../components/breadcrumb'
 import AppProfile from '../../components/profile'
 import { BACK_TO_LOGIN, UserApi } from '../../api'
 import ProfileInfo from './info'
@@ -60,7 +60,7 @@ class Profile extends Component {
     return (
       <Main title="Profile">
         <div className="profile">
-          <Breadcrumb items={[BreadcrumbItems.PROFILE, selected === PROFILE_TYPES.PROFILE ? BreadcrumbItems.PROFILE_UPDATE : BreadcrumbItems.PROFILE_PASSWORD]} />
+          {/* <Breadcrumb items={[BreadcrumbItems.PROFILE, selected === PROFILE_TYPES.PROFILE ? BreadcrumbItems.PROFILE_UPDATE : BreadcrumbItems.PROFILE_PASSWORD]} /> */}
           <div className="app-content">
             <Card className="profile__nav">
               <div style={{ paddingLeft: '24px' }}>

@@ -1,10 +1,13 @@
 import React from 'react'
-import { Layout, Popover, Button, Avatar, Divider } from 'antd'
+import { Layout, Popover, Button, Avatar, Divider, Icon } from 'antd'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import Logo from '../../assets/billfazz-logo-29.png'
+import { getCookies } from '../../utils/cookies'
+import { CONFIG_COOKIES } from '../../config/cookies'
+import { MENU } from '../../config/menu'
 import './header.scss'
-
 
 // const logout = () => {
 //   UserApi.logout()
@@ -12,35 +15,38 @@ import './header.scss'
 //     .catch(err => message.error(getErrorMessage(err) || 'Logout failed. Please try again'))
 // }
 
+const username = getCookies(CONFIG_COOKIES.USERNAME)
+const initial = username.split(' ').map(x => x.substring(0, 1)).join('')
+
 const content = (
-  <div className="popover-profile">
+  <div className="app-header__popover-profile">
     <div>
-      <Avatar style={{ backgroundColor: '#a1cd43' }} size="large" >
-        AB
+      <Avatar style={{ backgroundColor: '#a1cd43' }} size={60}>
+        <div className="app-header__popover-initial --big">{initial}</div>
       </Avatar>
     </div>
-    <div>
-      Albert Burgess
+    <div className="app-header__popover-username">
+      {username}
     </div>
-    <div>
-      Admin
+    <div className="app-header__popover-label">
+      {getCookies(CONFIG_COOKIES.ROLE_NAME)}
     </div>
-    <Divider/>
-    <div>
+    <Divider />
+    <div className="app-header__popover-label">
       Main Email Address
     </div>
     <div>
       albert@payfazz.com
     </div>
-    <Divider/>
-    <div>
-      My Profile
-    </div>
-    <div>
-      Sign Out
+    <Divider />
+    <Link to={MENU.PROFILE} className="app-header__popover-action">
+      <Icon type="user" /> My Profile
+    </Link>
+    <div className="app-header__popover-action">
+      <Icon type="logout" /> Sign Out
     </div>
   </div>
-);
+)
 
 const { Header } = Layout
 const AppHeader = ({ toggle, title, backToHome }) => (
@@ -58,13 +64,13 @@ const AppHeader = ({ toggle, title, backToHome }) => (
         {title}
       </div>
       <div className="app-header__popover">
-        <Avatar style={{ backgroundColor: '#a1cd43', verticalAlign: 'middle' }} size="large">
-          AB
+        <Avatar style={{ backgroundColor: '#a1cd43', verticalAlign: 'middle' }} size={32}>
+          <div className="app-header__popover-initial">{initial}</div>
         </Avatar>
         <Popover placement="bottomRight" content={content} trigger="click">
           <div>
             <Button className="btn-name_profile">
-              Albert Burgess
+              {username}
             </Button>
           </div>
         </Popover>

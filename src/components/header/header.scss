@@ -74,7 +74,7 @@
 }
 
 .app-header__popover {
-  padding-right: 50px;
+  padding-right: 24px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -82,9 +82,40 @@
 }
 
 .btn-name_profile{
+  padding: 0 0 0 0.5em !important;
   border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
-.popover-profile{
+.app-header__popover-profile{
+  min-width: 180px;
   text-align: center !important;
+}
+
+.app-header__popover-username {
+  padding: 1em 2em 0 2em;
+  font-weight: bold;
+}
+
+.app-header__popover-label {
+  font-size: 1.1rem;
+}
+
+.app-header__popover-initial {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  &.--big {
+    font-size: 20px;
+  }
+}
+
+.app-header__popover-action {
+  padding: 0.75em 0 !important;
+  color: rgba(0, 0, 0, 0.65) !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  i {
+    margin-right: 3px;
+  }
 }
