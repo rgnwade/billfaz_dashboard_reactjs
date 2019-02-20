@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Card, DatePicker, Modal, Select, message } from 'antd'
+import dayjs from 'dayjs'
 
 import { OrderApi } from '../../../api'
 import { getError } from '../../../utils/error/api'
@@ -11,7 +12,7 @@ class Report extends Component {
     super(props)
     this.state = {
       data: {
-        status: '',
+        status: 'all',
       },
       loading: false,
     }
@@ -22,22 +23,27 @@ class Report extends Component {
     const thisEl = this
     await this.setState({ ...this.state, loading: true })
     Modal.confirm({
-      title: 'Send Report Confirmation',
+      title: 'Export Data Confirmation',
       content: 'Are you sure?',
       onOk() {
         const payload = {
-          filterType: 'period',
-          status: data.status || '',
-          startDate: data.startDate ? data.startDate.format('YYYY-MM-DD') : '',
-          endDate: data.endDate ? data.endDate.format('YYYY-MM-DD') : '',
+          issuedStatus: data.status || '',
+          dateStart: data.startDate ? data.startDate.format('YYYY-MM-DD') : '',
+          dateEnd: data.endDate ? data.endDate.format('YYYY-MM-DD') : '',
         }
-        OrderApi.sendReport(payload)
+        OrderApi.export(payload)
           .then((res) => {
-            Modal.success({ title: `Send report for ${res.data} order success` })
-            thisEl.setState({ ...thisEl.state, data: {}, loading: false })
+            message.success('Export data success')
+            const dataExport = new Blob([res.data], { type: 'text/csv' })
+            const csvURL = window.URL.createObjectURL(dataExport)
+            const element = document.createElement('a')
+            element.href = csvURL
+            element.setAttribute('download', `export-order-${dayjs().format('YYYYMMDDHHmmssSSS')}.csv`)
+            element.click()
+            thisEl.setState({ ...thisEl.state, data: { status: 'all' }, loading: false })
           })
           .catch((err) => {
-            message.error(getError(err) || 'Send report failed')
+            message.error(getError(err) || 'Export data failed')
             thisEl.setState({ ...thisEl.state, loading: false })
           })
       },
@@ -68,13 +74,13 @@ class Report extends Component {
                   </Select>
                 </div>
               </div>
-              <div style={{ marginRight: '0.5em' }}>
+              <div style={{ marginRight: '1em' }}>
                 <label className="small-text">Date:</label>
                 <div>
                   <DatePicker style={{ width: 150 }} value={data.startDate} onChange={e => this.changeInput(e, 'startDate')} />
                 </div>
               </div>
-              <div style={{ marginRight: '1em', marginTop: '29px' }}>
+              <div style={{ marginTop: '29px' }}>
                 To
               </div>
               <div style={{ marginRight: '0.5em' }}>
