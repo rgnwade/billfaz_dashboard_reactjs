@@ -1,5 +1,4 @@
 @import '../../config/_global.scss';
-
 .sidebar__drawer {
   .ant-drawer-header {
     border-bottom: none;
@@ -8,23 +7,25 @@
     padding: 1em 0;
   }
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: $primary-light-color;
+    background-color: $primary-light-color !important;
   }
-  .ant-menu-item:hover,
-  .ant-menu-item-active,
-  .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
-  .ant-menu-submenu-active,
-  .ant-menu-submenu-title:hover,
-  .ant-menu-item>a:hover,
   .ant-menu-item-selected>a,
   .ant-menu-item-selected>a:hover {
-    background-color: #a1cd43;
+    color: $primary-dark-color !important;
   }
   .ant-menu-vertical .ant-menu-item:after,
   .ant-menu-vertical-left .ant-menu-item:after,
   .ant-menu-vertical-right .ant-menu-item:after,
   .ant-menu-inline .ant-menu-item:after {
-    border-right: 3px solid $primary-color;
+    border-right: 3px solid $primary-color !important;
+  }
+  .ant-menu-item>a:hover,
+  .ant-menu-item:hover,
+  .ant-menu-item-active,
+  .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+  .ant-menu-submenu-active,
+  .ant-menu-submenu-title:hover {
+    color: $primary-color !important;
   }
 }
 
