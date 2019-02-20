@@ -10,5 +10,6 @@ export default ({ url, config, defaultParams }) => {
     sendReport: data => axios.post(`${url}${endpoint}/resendCallback`, data, config()),
     getTotal: () => axios.get(`${url}${endpoint}/total`, config()),
     refund: (id, data) => axios.post(`${url}${endpoint}/${id}/refund`, data, config()),
+    export: data => axios.post(`${url}${endpoint}/export`, data, config()),
   }
 }
