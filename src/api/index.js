@@ -36,6 +36,8 @@ export const BACK_TO_LOGIN = async (isExpired = false) => {
   await cookies.remove(CONFIG_COOKIES.ROLE)
   await cookies.remove(CONFIG_COOKIES.USERNAME)
   await cookies.remove(CONFIG_COOKIES.PERMISSION)
+  await cookies.remove(CONFIG_COOKIES.ROLE_NAME)
+  await cookies.remove(CONFIG_COOKIES.EMAIL)
   window.location.href = isExpired ? `${MENU.LOGIN}?isExpired=true` : MENU.HOME
 }
 

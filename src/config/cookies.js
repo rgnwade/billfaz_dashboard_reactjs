@@ -4,4 +4,6 @@ export const CONFIG_COOKIES = {
   FULLNAME: '_billfazzDashboardFullname',
   ROLE: '_billfazzDashboardRole',
   PERMISSION: '_billfazzPerm',
+  ROLE_NAME: '_billfazzDashboardRoleName',
+  EMAIL: '_billfazzDashboardEmail',
 }

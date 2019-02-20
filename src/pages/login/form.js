@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import MENU from '../../config/menu'
-import { AuthApi, PermissionApi } from '../../api'
+import { AuthApi, PermissionApi, UserApi } from '../../api'
 import { cookies } from '../../utils/cookies'
 import { CONFIG_COOKIES } from '../../config/cookies'
 import { getErrorMessage } from '../../utils/error/api'
@@ -50,8 +50,22 @@ class FormSignIn extends Component {
   }
 
   getPermission = () => {
-    PermissionApi.get()
-      .then(res => cookies.set(CONFIG_COOKIES.PERMISSION, JSON.stringify(Object.keys(res.data))))
+    Promise.all([
+      PermissionApi.get(),
+      UserApi.get(),
+    ])
+      .then((res) => {
+        const { email } = res[1].data.Client
+        let role = res[1].data.role && res[1].data.role.length > 0 ? res[1].data.role[0] : ''
+        const roles = {
+          client_root: 'Admin',
+          client_cs: 'CS',
+        }
+        role = roles[role] ? roles[role] : role
+        cookies.set(CONFIG_COOKIES.PERMISSION, JSON.stringify(Object.keys(res[0].data)))
+        cookies.set(CONFIG_COOKIES.ROLE_NAME, role)
+        cookies.set(CONFIG_COOKIES.EMAIL, email)
+      })
       .catch((err) => {
         this.setState({ ...this.state, loading: false })
         message.error(getErrorMessage(err) || 'Error fetching data roles. Please relogin')

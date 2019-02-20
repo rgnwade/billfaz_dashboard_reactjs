@@ -1,14 +1,19 @@
 import React from 'react'
+import { Avatar } from 'antd'
 import PropTypes from 'prop-types'
-import './profile.css'
+import { getCookies } from '../../utils/cookies'
+import { CONFIG_COOKIES } from '../../config/cookies'
+import './profile.scss'
 
-const Profile = ({ status, name, description }) => (
+const Profile = ({ status, size }) => (
   <div className="app-profile__container">
     <div className="app-profile">
-      <div className="app-profile__pic" />
+      <div className="app-profile__pic">
+        <Avatar size={size} icon="user" />
+      </div>
       <div>
-        <div>{name}</div>
-        <div className="med-text --gray">{description}</div>
+        <div>{getCookies(CONFIG_COOKIES.USERNAME)}</div>
+        <div className="app-profile__description">{getCookies(CONFIG_COOKIES.ROLE_NAME)}</div>
       </div>
     </div>
     {status && <div className={`app-profile__status app__agent-status --${status.split(' ').join('').toLowerCase()}`}>{status}</div>}
@@ -17,14 +22,12 @@ const Profile = ({ status, name, description }) => (
 
 Profile.defaultProps = {
   status: '',
-  name: 'John Doe',
-  description: '',
+  size: 60,
 }
 
 Profile.propTypes = {
   status: PropTypes.string,
-  name: PropTypes.string,
-  description: PropTypes.string,
+  size: PropTypes.number,
 }
 
 export default Profile

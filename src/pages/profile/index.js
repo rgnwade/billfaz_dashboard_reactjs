@@ -19,7 +19,6 @@ class Profile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dataForDisplay: {},
       dataPassword: {},
       code: '',
       selected: this.props.match.params.type || PROFILE_TYPES.PROFILE,
@@ -51,7 +50,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { selected, dataForDisplay, code } = this.state
+    const { selected, code } = this.state
     const contents = {
       [PROFILE_TYPES.PROFILE]: <ProfileInfo />,
       [PROFILE_TYPES.PASSWORD]: <ChangePassword />,
@@ -65,7 +64,7 @@ class Profile extends Component {
           <div className="app-content">
             <Card className="profile__nav">
               <div style={{ paddingLeft: '24px' }}>
-                <AppProfile name={dataForDisplay.fullname} description={code} />
+                <AppProfile description={code} />
               </div>
               <Menu
                 mode="inline"
