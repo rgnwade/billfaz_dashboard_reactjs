@@ -39,7 +39,9 @@ class Report extends Component {
             const element = document.createElement('a')
             element.href = csvURL
             element.setAttribute('download', `export-order-${dayjs().format('YYYYMMDDHHmmssSSS')}.csv`)
+            document.body.appendChild(element)
             element.click()
+            document.body.removeChild(element)
             thisEl.setState({ ...thisEl.state, data: { status: 'all' }, loading: false })
           })
           .catch((err) => {
