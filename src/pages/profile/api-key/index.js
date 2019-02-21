@@ -4,6 +4,8 @@ import { Button, Modal, Table, message } from 'antd'
 import { UserApi } from '../../../api'
 import { getErrorMessage } from '../../../utils/error/api'
 import { datetimeToLocal } from '../../../utils/formatter/datetime'
+import Role from '../../../components/role'
+import { ROLES_ITEMS } from '../../../config/roles'
 
 class ApiKey extends Component {
   constructor(props) {
@@ -91,7 +93,7 @@ class ApiKey extends Component {
       ),
     }]
     return (
-      <div>
+      <Role roleItem={ROLES_ITEMS.PROFILE_API_KEY}>
         <Table
           className="table-responsive"
           loading={loading}
@@ -104,7 +106,7 @@ class ApiKey extends Component {
         <Button disabled={data && data.length > 1} type="primary" onClick={this.generateApiKey} loading={loadingCreate}>
           Generate New API Key
         </Button>
-      </div>
+      </Role>
     )
   }
 }

@@ -13,6 +13,8 @@ import ApiKey from './api-key'
 import { PROFILE_TYPES } from '../../config/profile'
 import MENU from '../../config/menu'
 import { getErrorMessage } from '../../utils/error/api'
+import Role from '../../components/role'
+import { ROLES_ITEMS } from '../../config/roles'
 import './profile.scss'
 
 class Profile extends Component {
@@ -79,9 +81,11 @@ class Profile extends Component {
                 <Menu.Item key="user-management" onClick={() => this.changeSelected(PROFILE_TYPES.USER_MANAGEMENT)}>
                   User Management
                 </Menu.Item>
-                <Menu.Item key="api-key" onClick={() => this.changeSelected(PROFILE_TYPES.API_KEY)}>
-                  Api Key
-                </Menu.Item>
+                <Role roleItem={ROLES_ITEMS.PROFILE_API_KEY}>
+                  <Menu.Item key="api-key" onClick={() => this.changeSelected(PROFILE_TYPES.API_KEY)}>
+                    Api Key
+                  </Menu.Item>
+                </Role>
                 <Menu.Item key="logout" onClick={this.logout}>
                   Logout
                 </Menu.Item>

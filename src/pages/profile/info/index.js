@@ -3,6 +3,8 @@ import { Form, Input, Button, Divider, message } from 'antd'
 
 import { UserApi, ClientApi } from '../../../api'
 import { getError } from '../../../utils/error/api'
+import Role from '../../../components/role'
+import { ROLES_ITEMS } from '../../../config/roles'
 
 class ProfileInfo extends Component {
   constructor(props) {
@@ -82,46 +84,48 @@ class ProfileInfo extends Component {
               style={{ width: 400 }}
             />
           </Form.Item>
-          <Form.Item>
-            <div>
-              <label className="small-text">Main Email Address</label>
-            </div>
-            <Input
-              required
-              name="email"
-              value={data.email}
-              onChange={this.changeInput}
-              type="email"
-              style={{ width: 400 }}
-              pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
-              title="Please enter valid email address"
-            />
-          </Form.Item>
-          <Form.Item>
-            <div>
-              <label className="small-text">Finance Email Address</label>
-            </div>
-            <Input
-              required
-              name="emailFinance"
-              value={data.emailFinance}
-              onChange={this.changeInput}
-              type="email"
-              style={{ width: 400 }}
-              pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
-              title="Please enter valid email address"
-            />
-          </Form.Item>
-          <Form.Item>
-            <div className="profile__actions">
-              <Divider />
-              <div className="profile__actions-container">
-                <Button loading={loading} type="primary" htmlType="submit">
-                  Save
-                </Button>
+          <Role roleItem={ROLES_ITEMS.PROFILE_CHANGE_EMAIL}>
+            <Form.Item>
+              <div>
+                <label className="small-text">Main Email Address</label>
               </div>
-            </div>
-          </Form.Item>
+              <Input
+                required
+                name="email"
+                value={data.email}
+                onChange={this.changeInput}
+                type="email"
+                style={{ width: 400 }}
+                pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                title="Please enter valid email address"
+              />
+            </Form.Item>
+            <Form.Item>
+              <div>
+                <label className="small-text">Finance Email Address</label>
+              </div>
+              <Input
+                required
+                name="emailFinance"
+                value={data.emailFinance}
+                onChange={this.changeInput}
+                type="email"
+                style={{ width: 400 }}
+                pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                title="Please enter valid email address"
+              />
+            </Form.Item>
+            <Form.Item>
+              <div className="profile__actions">
+                <Divider />
+                <div className="profile__actions-container">
+                  <Button loading={loading} type="primary" htmlType="submit">
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </Form.Item>
+          </Role>
         </Form>
       </div>
     )
