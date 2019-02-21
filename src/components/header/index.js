@@ -38,7 +38,7 @@ const AppHeader = ({ toggle, title, backToHome }) => {
         Main Email Address
       </div>
       <div>
-        albert@payfazz.com
+        {getCookies(CONFIG_COOKIES.EMAIL)}
       </div>
       <Divider />
       <Link to={MENU.PROFILE} className="app-header__popover-action">
