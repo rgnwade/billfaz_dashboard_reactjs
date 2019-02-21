@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Card, DatePicker, Modal, Select, message, TimePicker } from 'antd'
-
+import dayjs from 'dayjs'
 import { DepositApi } from '../../../api'
 import { getError } from '../../../utils/error/api'
 import { DEPOSIT_REPORT_STATUS } from '../../../config/deposit'
@@ -36,14 +36,20 @@ class Report extends Component {
           timeEnd: data.timeEnd ? data.timeEnd.format('HH:mm') : '',
         }
         DepositApi.exportData(payload)
-          .then((res) => {
-            Modal.success({ title: `Send report for ${res.data} order success` })
-            thisEl.setState({ ...thisEl.state, data: {}, loading: false })
-          })
-          .catch((err) => {
-            message.error(getError(err) || 'Send report failed')
-            thisEl.setState({ ...thisEl.state, loading: false })
-          })
+        .then((res) => {
+          message.success('Export data success')
+          const dataExport = new Blob([res.data], { type: 'text/csv' })
+          const csvURL = window.URL.createObjectURL(dataExport)
+          const element = document.createElement('a')
+          element.href = csvURL
+          element.setAttribute('download', `export-order-${dayjs().format('YYYYMMDDHHmmssSSS')}.csv`)
+          element.click()
+          thisEl.setState({ ...thisEl.state, data: { status: 'all' }, loading: false })
+        })
+        .catch((err) => {
+          message.error(getError(err) || 'Export data failed')
+          thisEl.setState({ ...thisEl.state, loading: false })
+        })
       },
     })
   }
