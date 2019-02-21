@@ -1,10 +1,6 @@
 import React from 'react'
-<<<<<<< HEAD
-import { Button } from 'antd'
-=======
 import { Button, Tooltip } from 'antd'
 
->>>>>>> 6e45407bfd0e5e1bde09b3a76a3f058cb4c11fe0
 import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { numberToMoney } from '../../../utils/formatter/currency'
 
