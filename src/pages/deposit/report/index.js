@@ -39,11 +39,13 @@ class Report extends Component {
         .then((res) => {
           message.success('Export data success')
           const dataExport = new Blob([res.data], { type: 'text/csv' })
-          const csvURL = window.URL.createObjectURL(dataExport)
-          const element = document.createElement('a')
-          element.href = csvURL
-          element.setAttribute('download', `export-order-${dayjs().format('YYYYMMDDHHmmssSSS')}.csv`)
-          element.click()
+            const csvURL = window.URL.createObjectURL(dataExport)
+            const element = document.createElement('a')
+            element.href = csvURL
+            element.setAttribute('download', `export-deposit-${dayjs().format('YYYYMMDDHHmmssSSS')}.csv`)
+            document.body.appendChild(element)
+            element.click()
+            document.body.removeChild(element)
           thisEl.setState({ ...thisEl.state, data: { status: 'all' }, loading: false })
         })
         .catch((err) => {

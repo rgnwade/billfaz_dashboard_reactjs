@@ -17,6 +17,7 @@ import MENU from '../../../config/menu'
 import { hasAccess } from '../../../utils/roles'
 import { ROLES_ITEMS } from '../../../config/roles'
 import DepositReport from '../report'
+import { numberToMoney } from '../../../utils/formatter/currency'
 
 
 class FormExport extends Component {
@@ -28,6 +29,7 @@ class FormExport extends Component {
       timeStart: '',
       dateEnd: '',
       timeEnd: '',
+      userMsg:'',
     }
   }
   changeAction = e => this.setState({ action: e.target.value })
@@ -127,7 +129,7 @@ class ClientDeposit extends Component {
   getData = async (params = this.state.params) => {
     const { type } = this.props
     await this.setState({ ...this.state, loading: true })
-    if (params.action === '') delete params.action
+    // if (params.action === '') delete params.action
     DepositApi.get(type, params)
       .then((res) => {
         const data = res.data
@@ -144,6 +146,24 @@ class ClientDeposit extends Component {
         this.setState({ ...this.state, loading: false })
       })
   }
+
+  getBalance = async (params = this.state.params) => {
+    DepositApi.getBalance(params)
+    .then((res) => {
+      const dataBalance = res.data
+      this.setState({
+        ...this.state,
+        data: dataBalance.balance,
+        loading: false,
+        params,
+      })
+    })
+    .catch(() => {
+      this.setState({ ...this.state, loading: false })
+    })
+}
+  
+  
 
   changeFilter = (value, field) => {
     const { params } = this.state
@@ -209,7 +229,7 @@ class ClientDeposit extends Component {
 
   render() {
 
-    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd } = this.state
+    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd, dataBalance} = this.state
     const { type } = this.props
  
       
@@ -234,7 +254,7 @@ class ClientDeposit extends Component {
           
             <div className="app-actions__right">
               <a class="total">Total Deposit</a>
-              <div class="top-up">Rp.546.875.089
+              <div class="top-up">{numberToMoney(dataBalance)}
               </div>
               <Button htmlType="submit" className="top-up" onClick={this.showModal} loading={loading} type="primary">TOP UP</Button>
                 <Modal

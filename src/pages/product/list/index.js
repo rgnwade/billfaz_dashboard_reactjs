@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Card, Select, Table, Tag } from 'antd'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
-
+import { numberToMoney } from '../../../utils/formatter/currency'
 import TableControl from '../../../components/table-control'
 import Filter from '../../../components/filter'
 import { ProductApi, ProviderApi } from '../../../api'
-import { OPTIONS_CONFIG_ACTIVE } from '../../../config/options'
+import { OPTIONS_CONFIG_ACTIVE } from '../../../config/product'
 import { parseUrlQueryParams, compareParams, generateUrlQueryParams } from '../../../utils/url-query-params'
 import MENU from '../../../config/menu'
 import { PRODUCT_TABS } from '../../../config/product'
@@ -28,7 +28,7 @@ const columnFields = {
     dataIndex:'description',
     key:'description',
     render: text => (
-      <div>{text}</div>
+      <div style={{width:'180', whiteSpace:'normal'}}>{text}</div>
     ),
   },
   price: {
@@ -36,7 +36,7 @@ const columnFields = {
     dataIndex:'sellPrice',
     key:'sellPrice',
     render: text => (
-      <div>{text}</div>
+      <div>{numberToMoney(text)}</div>
     ),
   },
   status: {
@@ -45,7 +45,7 @@ const columnFields = {
     key:'active',
     render: text => (
       <div style={{ width: '150px' }}>
-        <span className={`app__status --${text ? 'deposit' : 'refund'}`}>{text ? 'Active':'Inactive'}</span>
+        <span className={`app__status --${text ? 'active' : 'failed'}`}>{text ? 'Active':'Inactive'}</span>
       </div>
     ),
   },
@@ -131,11 +131,11 @@ class ProductList extends Component {
   }
 
   getFilterData = () => {
-    ProviderApi.getAll()
+    ProductApi.get()
       .then((res) => {
-        const providers = res.data.providers || []
-        providers.unshift({ id: '', name: 'All Providers' })
-        this.setState({ ...this.state, providers })
+        const active = res.data.active || []
+        active.unshift({ id: '', name: 'All Product' })
+        this.setState({ ...this.state, active })
       })
       .catch(() => {})
   }
@@ -167,7 +167,7 @@ class ProductList extends Component {
   }
 
   render() {
-    const { loading, data, params, valPerPage } = this.state
+    const { loading, data, params, valPerPage, active } = this.state
     const leftFilter = (
       <div className="flex">
         <div style={{ marginRight: '1em' }}>

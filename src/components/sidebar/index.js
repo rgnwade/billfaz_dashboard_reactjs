@@ -50,11 +50,11 @@ const Sidebar = ({ collapsed, toggle, location, logout }) => {
               Product
             </NavLink>
           </Menu.Item>
-          <Menu.Item key={MENU.CLIENT_KEY}>
+          {/* <Menu.Item key={MENU.CLIENT_KEY}>
             <NavLink to={MENU.CLIENT}>
               Client
             </NavLink>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key="/logout" onClick={logout}>
             Logout
           </Menu.Item>
