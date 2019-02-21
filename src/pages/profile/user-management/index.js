@@ -3,6 +3,8 @@ import { Button, Divider, Form, Input, Modal, Table, message } from 'antd'
 
 import { UserApi } from '../../../api'
 import { getError, getErrorMessage } from '../../../utils/error/api'
+import Role from '../../../components/role'
+import { ROLES_ITEMS } from '../../../config/roles'
 
 class UserManagement extends Component {
   constructor(props) {
@@ -100,16 +102,16 @@ class UserManagement extends Component {
       key: 'role',
     }, {
       title: (
-        <div className="flex-end">
+        <Role roleItem={ROLES_ITEMS.PROFILE_CREATE_USER} className="flex-end">
           <Button type="primary" icon="plus" onClick={this.openModal}>Add User</Button>
-        </div>
+        </Role>
       ),
       dataIndex: 'id',
       key: 'id',
       render: (id, record) => (
-        <div className="flex-end">
+        <Role roleItem={ROLES_ITEMS.PROFILE_CREATE_USER} className="flex-end">
           <Button shape="circle" icon="close" size="small" onClick={() => this.deleteUser(id, record.username)} />
-        </div>
+        </Role>
 
       ),
     }]
