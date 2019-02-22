@@ -97,7 +97,7 @@ class ClientDeposit extends Component {
   componentDidMount() {
     const { location } = this.props
     this.getData(parseUrlQueryParams(location.search))
-    // this.getBalance()
+    this.getBalance()
   }
 
   componentDidUpdate(prevProps) {
@@ -148,17 +148,18 @@ class ClientDeposit extends Component {
       })
   }
 
-  getBalance = async (params = this.state.params) => {
+  getBalance = () => {
     DepositApi.getBalance()
     .then(res => {
       console.log(res)
-      const balance = res.data;
+      const balance = res.data.balance;
       this.setState({ balance });
     })
   .catch(() => {
     this.setState({ ...this.state, loading: false })
   })
 }
+
 
   changeFilter = (value, field) => {
     const { params } = this.state
