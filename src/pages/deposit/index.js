@@ -7,9 +7,9 @@ import Main from '../../components/main'
 import { DEPOSIT_TYPES } from '../../config/deposit'
 import MENU from '../../config/menu'
 import ListDeposit from './content'
-import CreateNotification from './create'
 import { ROLES_ITEMS } from '../../config/roles'
-import { hasAccess } from '../../utils/roles'
+// import CreateNotification from './create'
+// import { hasAccess } from '../../utils/roles'
 
 const panes = activeKey => [
   {

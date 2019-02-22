@@ -1,8 +1,8 @@
 import React from 'react'
-import { Input, Modal, Select } from 'antd'
+import { Modal } from 'antd'
 import PropTypes from 'prop-types'
-import { OPTIONS_CONFIG_CHANGE_ORDER_STATUS } from '../../../config/options'
-import { ORDER_STATUS } from '../../../config/order'
+// import { OPTIONS_CONFIG_CHANGE_ORDER_STATUS } from '../../../config/options'
+// import { ORDER_STATUS } from '../../../config/order'
 
 const OrderModal = ({ visible, modalOk, modalClose, changeStatus, changeReferenceNumber, data }) => (
   <Modal

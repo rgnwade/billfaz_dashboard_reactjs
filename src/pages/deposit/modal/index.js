@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Modal } from 'antd'
+import { Modal } from 'antd'
 import '../deposit.scss'
 
 const TopupModal = ({

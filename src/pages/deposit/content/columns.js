@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button } from 'antd'
+// import { Button } from 'antd'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
-import { datetimeToLocal } from '../../../utils/formatter/datetime'
+// import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { numberToMoney } from '../../../utils/formatter/currency'
 import '../deposit.scss'
 

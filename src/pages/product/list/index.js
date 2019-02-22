@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Card, Select, Table, Tag } from 'antd'
+import { Card, Select, Table } from 'antd'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { numberToMoney } from '../../../utils/formatter/currency'
 import TableControl from '../../../components/table-control'
 import Filter from '../../../components/filter'
-import { ProductApi, ProviderApi } from '../../../api'
+import { ProductApi } from '../../../api'
 import { OPTIONS_CONFIG_ACTIVE } from '../../../config/product'
 import { parseUrlQueryParams, compareParams, generateUrlQueryParams } from '../../../utils/url-query-params'
 import MENU from '../../../config/menu'
@@ -167,7 +167,7 @@ class ProductList extends Component {
   }
 
   render() {
-    const { loading, data, params, valPerPage, active } = this.state
+    const { loading, data, params, valPerPage } = this.state
     const leftFilter = (
       <div className="flex">
         <div style={{ marginRight: '1em' }}>

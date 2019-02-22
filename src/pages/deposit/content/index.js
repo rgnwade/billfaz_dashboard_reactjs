@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { Card, Table, message, Button, Row, Col, Select, DatePicker, TimePicker, Modal, Form, Input} from 'antd'
+import { Card, Table, message, Button, Row, Col, Modal} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
+// import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
 import TableControl from '../../../components/table-control'
-import moment from 'moment'
-import Filter from '../../../components/filter'
+// import moment from 'moment'
+// import Filter from '../../../components/filter'
 import columns from './columns'
 import { DepositApi } from '../../../api'
-import TopupModal from '../modal'
-import { moneyToNumber } from '../../../utils/formatter/currency'
+// import TopupModal from '../modal'
+// import { moneyToNumber } from '../../../utils/formatter/currency'
 import { getErrorMessage } from '../../../utils/error/api'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
 import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../../../utils/url-query-params'
@@ -29,7 +29,6 @@ class FormExport extends Component {
       timeStart: '',
       dateEnd: '',
       timeEnd: '',
-      balance: [],
     }
   }
   changeAction = e => this.setState({ action: e.target.value })
@@ -63,17 +62,17 @@ class FormExport extends Component {
   }
 }
 
-const Option = Select.Option;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
+// const Option = Select.Option;
+// function handleChange(value) {
+//   console.log(`selected ${value}`);
+// }
 
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
-function onChange(date, dateString) {
-  console.log(date, dateString);
-}
+// const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+// function onChange(date, dateString) {
+//   console.log(date, dateString);
+// }
 
-const format = 'HH:mm';
+// const format = 'HH:mm';
 
 class ClientDeposit extends Component {
   constructor(props) {
@@ -225,7 +224,7 @@ class ClientDeposit extends Component {
 
   render() {
 
-    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd, balance} = this.state
+    const { loading, data, params, valPerPage, balance} = this.state
     const { type } = this.props
  
       
