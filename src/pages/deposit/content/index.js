@@ -255,7 +255,7 @@ class ClientDeposit extends Component {
                 <Modal
           title="Top Up Information"
           visible={this.state.visible}
-          onOke={this.handleOke}
+          onOk={this.handleOke}
           onCancel={this.handleCancel}
         >
           <p>1. Client diharapkan melakukan setoran ke salah satu rekening Billfazz yang tertera dibawah ini:</p>
@@ -264,7 +264,7 @@ class ClientDeposit extends Component {
           <p>2. Nominal deposit diharapkan disesuaikan juga dengan kode setoran yang berupa client ID (*12).</p>
           <p>contoh</p>
           <p>Anda ingin menyetor deposit Rp.100.000.000</p>
-          <p>*  Clien ID: 12*</p>
+          <p>*  Client ID</p>
           <p>*  Total yang disetorkan: Rp.  100.000.012*</p>
           <p>3. Masukan "Deposit(Nama Client)" di keterangan transfer.></p>
           <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>
