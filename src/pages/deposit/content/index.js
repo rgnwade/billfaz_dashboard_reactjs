@@ -29,7 +29,7 @@ class FormExport extends Component {
       timeStart: '',
       dateEnd: '',
       timeEnd: '',
-      userMsg:'',
+      balance: [],
     }
   }
   changeAction = e => this.setState({ action: e.target.value })
@@ -97,6 +97,7 @@ class ClientDeposit extends Component {
   componentDidMount() {
     const { location } = this.props
     this.getData(parseUrlQueryParams(location.search))
+    // this.getBalance()
   }
 
   componentDidUpdate(prevProps) {
@@ -129,7 +130,7 @@ class ClientDeposit extends Component {
   getData = async (params = this.state.params) => {
     const { type } = this.props
     await this.setState({ ...this.state, loading: true })
-    // if (params.action === '') delete params.action
+    if (params.action === '') delete params.action
     DepositApi.get(type, params)
       .then((res) => {
         const data = res.data
@@ -148,22 +149,16 @@ class ClientDeposit extends Component {
   }
 
   getBalance = async (params = this.state.params) => {
-    DepositApi.getBalance(params)
-    .then((res) => {
-      const dataBalance = res.data
-      this.setState({
-        ...this.state,
-        data: dataBalance.balance,
-        loading: false,
-        params,
-      })
+    DepositApi.getBalance()
+    .then(res => {
+      console.log(res)
+      const balance = res.data;
+      this.setState({ balance });
     })
-    .catch(() => {
-      this.setState({ ...this.state, loading: false })
-    })
+  .catch(() => {
+    this.setState({ ...this.state, loading: false })
+  })
 }
-  
-  
 
   changeFilter = (value, field) => {
     const { params } = this.state
@@ -174,15 +169,15 @@ class ClientDeposit extends Component {
     const { value } = e.target
     const { params } = this.state
     if (value) {
-      this.setState({ ...this.state, params: { ...params, page: 1, code: value } })
+      this.setState({ ...this.state, params: { ...params, page: 1, searchQuery: value } })
     } else {
-      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, code: '' })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, searchQuery: '' })
     }
   }
 
   search = (searchValue) => {
     const { params } = this.state
-    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, code: searchValue })
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, searchQuery: searchValue })
   }
 
   handlePrevPage = () => {
@@ -229,7 +224,7 @@ class ClientDeposit extends Component {
 
   render() {
 
-    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd, dataBalance} = this.state
+    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd, balance} = this.state
     const { type } = this.props
  
       
@@ -245,7 +240,7 @@ class ClientDeposit extends Component {
           loading={loading}
           searchText={type === DEPOSIT_TYPES.CLIENTS ? 'Order ID' : 'Provider Name'}
           disableSearch={type === DEPOSIT_TYPES.PROVIDERS}
-          searchValue={params.code}
+          searchValue={params.searchQuery}
           changeSearch={this.changeSearch}
         />
        
@@ -253,8 +248,8 @@ class ClientDeposit extends Component {
        <Col span={24}>
           
             <div className="app-actions__right">
-              <a class="total">Total Deposit</a>
-              <div class="top-up">{numberToMoney(dataBalance)}
+              <a className="total">Total Deposit</a>
+              <div className="top-up">{numberToMoney(balance)}
               </div>
               <Button htmlType="submit" className="top-up" onClick={this.showModal} loading={loading} type="primary">TOP UP</Button>
                 <Modal
@@ -287,7 +282,7 @@ class ClientDeposit extends Component {
           <Table
             className="table-responsive"
             loading={loading}
-            rowKey={type === DEPOSIT_TYPES.CLIENTS ? 'id' : 'provider'}
+            // rowKey={type === DEPOSIT_TYPES.CLIENTS ? 'id' : 'provider'}
             dataSource={data}
             columns={columns[type](this.clickTopup, hasAccess(ROLES_ITEMS.DEPOSIT_TOPUP))}
             pagination={false}

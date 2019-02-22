@@ -18,12 +18,12 @@ const panes = activeKey => [
     content: <ListDeposit type={DEPOSIT_TYPES.CLIENTS} active={activeKey === DEPOSIT_TYPES.CLIENTS} />,
     role: ROLES_ITEMS.DEPOSIT_CLIENT,
   },
-  {
-    key: DEPOSIT_TYPES.NOTIF,
-    title: 'Notification Deposit',
-    content: <CreateNotification type={DEPOSIT_TYPES.NOTIF} active={activeKey === DEPOSIT_TYPES.NOTIF} />,
-    role: ROLES_ITEMS.DEPOSIT_CLIENT,
-  },
+  // {
+  //   key: DEPOSIT_TYPES.NOTIF,
+  //   title: 'Notification Deposit',
+  //   content: <CreateNotification type={DEPOSIT_TYPES.NOTIF} active={activeKey === DEPOSIT_TYPES.NOTIF} />,
+  //   role: ROLES_ITEMS.DEPOSIT_CLIENT,
+  // },
 ]
 
 class Deposit extends Component {
