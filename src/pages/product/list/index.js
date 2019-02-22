@@ -45,7 +45,7 @@ const columnFields = {
     key:'active',
     render: text => (
       <div style={{ width: '150px' }}>
-        <span className={`app__status --${text ? 'active' : 'failed'}`}>{text ? 'Active':'Inactive'}</span>
+        <span className={`apps__status_product --${text ? 'true' : 'false'}`}>{text ? 'Active':'Inactive'}</span>
       </div>
     ),
   },
@@ -213,7 +213,7 @@ class ProductList extends Component {
 }
 
 ProductList.propTypes = {
-  active: PropTypes.bool.isRequired,
+  // active: PropTypes.bool.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 }
