@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { Card, Table, message, Button, Row, Col, Select, DatePicker, TimePicker, Modal, Form, Input} from 'antd'
+import { Card, Table, message, Button, Row, Col, Modal} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
+// import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
 import TableControl from '../../../components/table-control'
-import moment from 'moment'
-import Filter from '../../../components/filter'
+// import moment from 'moment'
+// import Filter from '../../../components/filter'
 import columns from './columns'
 import { DepositApi } from '../../../api'
-import TopupModal from '../modal'
-import { moneyToNumber } from '../../../utils/formatter/currency'
+// import TopupModal from '../modal'
+// import { moneyToNumber } from '../../../utils/formatter/currency'
 import { getErrorMessage } from '../../../utils/error/api'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
 import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../../../utils/url-query-params'
@@ -29,7 +29,6 @@ class FormExport extends Component {
       timeStart: '',
       dateEnd: '',
       timeEnd: '',
-      userMsg:'',
     }
   }
   changeAction = e => this.setState({ action: e.target.value })
@@ -63,17 +62,17 @@ class FormExport extends Component {
   }
 }
 
-const Option = Select.Option;
-function handleChange(value) {
-  console.log(`selected ${value}`);
-}
+// const Option = Select.Option;
+// function handleChange(value) {
+//   console.log(`selected ${value}`);
+// }
 
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
-function onChange(date, dateString) {
-  console.log(date, dateString);
-}
+// const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+// function onChange(date, dateString) {
+//   console.log(date, dateString);
+// }
 
-const format = 'HH:mm';
+// const format = 'HH:mm';
 
 class ClientDeposit extends Component {
   constructor(props) {
@@ -97,6 +96,7 @@ class ClientDeposit extends Component {
   componentDidMount() {
     const { location } = this.props
     this.getData(parseUrlQueryParams(location.search))
+    this.getBalance()
   }
 
   componentDidUpdate(prevProps) {
@@ -129,7 +129,7 @@ class ClientDeposit extends Component {
   getData = async (params = this.state.params) => {
     const { type } = this.props
     await this.setState({ ...this.state, loading: true })
-    // if (params.action === '') delete params.action
+    if (params.action === '') delete params.action
     DepositApi.get(type, params)
       .then((res) => {
         const data = res.data
@@ -147,23 +147,18 @@ class ClientDeposit extends Component {
       })
   }
 
-  getBalance = async (params = this.state.params) => {
-    DepositApi.getBalance(params)
-    .then((res) => {
-      const dataBalance = res.data
-      this.setState({
-        ...this.state,
-        data: dataBalance.balance,
-        loading: false,
-        params,
-      })
+  getBalance = () => {
+    DepositApi.getBalance()
+    .then(res => {
+      console.log(res)
+      const balance = res.data.balance;
+      this.setState({ balance });
     })
-    .catch(() => {
-      this.setState({ ...this.state, loading: false })
-    })
+  .catch(() => {
+    this.setState({ ...this.state, loading: false })
+  })
 }
-  
-  
+
 
   changeFilter = (value, field) => {
     const { params } = this.state
@@ -174,15 +169,15 @@ class ClientDeposit extends Component {
     const { value } = e.target
     const { params } = this.state
     if (value) {
-      this.setState({ ...this.state, params: { ...params, page: 1, code: value } })
+      this.setState({ ...this.state, params: { ...params, page: 1, searchQuery: value } })
     } else {
-      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, code: '' })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, searchQuery: '' })
     }
   }
 
   search = (searchValue) => {
     const { params } = this.state
-    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, code: searchValue })
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, searchQuery: searchValue })
   }
 
   handlePrevPage = () => {
@@ -229,7 +224,7 @@ class ClientDeposit extends Component {
 
   render() {
 
-    const { loading, size, data, params, valPerPage, modal, modalData, selected,action, dateStart, timeStart, dateEnd, timeEnd, dataBalance} = this.state
+    const { loading, data, params, valPerPage, balance} = this.state
     const { type } = this.props
  
       
@@ -245,7 +240,7 @@ class ClientDeposit extends Component {
           loading={loading}
           searchText={type === DEPOSIT_TYPES.CLIENTS ? 'Order ID' : 'Provider Name'}
           disableSearch={type === DEPOSIT_TYPES.PROVIDERS}
-          searchValue={params.code}
+          searchValue={params.searchQuery}
           changeSearch={this.changeSearch}
         />
        
@@ -253,14 +248,14 @@ class ClientDeposit extends Component {
        <Col span={24}>
           
             <div className="app-actions__right">
-              <a class="total">Total Deposit</a>
-              <div class="top-up">{numberToMoney(dataBalance)}
+              <a className="total">Total Deposit</a>
+              <div className="top-up">{numberToMoney(balance)}
               </div>
               <Button htmlType="submit" className="top-up" onClick={this.showModal} loading={loading} type="primary">TOP UP</Button>
                 <Modal
           title="Top Up Information"
           visible={this.state.visible}
-          onOke={this.handleOke}
+          onOk={this.handleOke}
           onCancel={this.handleCancel}
         >
           <p>1. Client diharapkan melakukan setoran ke salah satu rekening Billfazz yang tertera dibawah ini:</p>
@@ -269,7 +264,7 @@ class ClientDeposit extends Component {
           <p>2. Nominal deposit diharapkan disesuaikan juga dengan kode setoran yang berupa client ID (*12).</p>
           <p>contoh</p>
           <p>Anda ingin menyetor deposit Rp.100.000.000</p>
-          <p>*  Clien ID: 12*</p>
+          <p>*  Client ID</p>
           <p>*  Total yang disetorkan: Rp.  100.000.012*</p>
           <p>3. Masukan "Deposit(Nama Client)" di keterangan transfer.></p>
           <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>
@@ -287,7 +282,7 @@ class ClientDeposit extends Component {
           <Table
             className="table-responsive"
             loading={loading}
-            rowKey={type === DEPOSIT_TYPES.CLIENTS ? 'id' : 'provider'}
+            // rowKey={type === DEPOSIT_TYPES.CLIENTS ? 'id' : 'provider'}
             dataSource={data}
             columns={columns[type](this.clickTopup, hasAccess(ROLES_ITEMS.DEPOSIT_TOPUP))}
             pagination={false}
