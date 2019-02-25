@@ -21,6 +21,9 @@ class Login extends Component {
   componentDidMount() {
     const { location } = this.props
     const parsedQuery = qs.parse(location.search.replace('?', ''))
+    if (parsedQuery.isLogout) {
+      return
+    }
     if (parsedQuery.isExpired) {
       message.error('Session may be expired. Please login again')
       return

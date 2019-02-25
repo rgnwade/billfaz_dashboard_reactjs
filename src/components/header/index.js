@@ -17,7 +17,7 @@ const AppHeader = ({ toggle, title, backToHome }) => {
   const initial = username && username.split(' ').map(x => x.substring(0, 1)).join('')
   const logout = () => {
     UserApi.logout()
-      .then(() => BACK_TO_LOGIN())
+      .then(() => BACK_TO_LOGIN({ isLogout: true }))
       .catch(err => message.error(getErrorMessage(err) || 'Logout failed. Please try again'))
   }
   const content = (
