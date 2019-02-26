@@ -1,9 +1,9 @@
 export const CONFIG_COOKIES = {
-  TOKEN: '_billfazzDashboardToken',
-  USERNAME: '_billfazzDashboardUsername',
-  FULLNAME: '_billfazzDashboardFullname',
-  ROLE: '_billfazzDashboardRole',
-  PERMISSION: '_billfazzPerm',
-  ROLE_NAME: '_billfazzDashboardRoleName',
-  EMAIL: '_billfazzDashboardEmail',
+  TOKEN: '_billfazzDashboardExternalToken',
+  USERNAME: '_billfazzDashboardExternalUsername',
+  FULLNAME: '_billfazzDashboardExternalFullname',
+  ROLE: '_billfazzDashboardExternalRole',
+  PERMISSION: '_billfazzDashboardExternalPerm',
+  ROLE_NAME: '_billfazzDashboardExternalRoleName',
+  EMAIL: '_billfazzDashboardExternalEmail',
 }
