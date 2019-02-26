@@ -7,7 +7,7 @@ import TableControl from '../../../components/table-control'
 // import moment from 'moment'
 // import Filter from '../../../components/filter'
 import columns from './columns'
-import { DepositApi } from '../../../api'
+import { DepositApi, UserApi } from '../../../api'
 // import TopupModal from '../modal'
 // import { moneyToNumber } from '../../../utils/formatter/currency'
 import { getErrorMessage } from '../../../utils/error/api'
@@ -89,6 +89,7 @@ class ClientDeposit extends Component {
       selected: {},
       modal: false,
       modalData: {},
+      client: {},
     }
   }
 
@@ -97,6 +98,7 @@ class ClientDeposit extends Component {
     const { location } = this.props
     this.getData(parseUrlQueryParams(location.search))
     this.getBalance()
+    this.getClient()
   }
 
   componentDidUpdate(prevProps) {
@@ -157,6 +159,22 @@ class ClientDeposit extends Component {
   .catch(() => {
     this.setState({ ...this.state, loading: false })
   })
+}
+
+getClient = () => {
+  UserApi.get()
+  .then((res) => {
+    console.log(res)
+    this.setState({
+      ...this.state,
+      client: {
+        ...res.data.Client
+      },
+    })
+  })
+.catch(() => {
+  this.setState({ ...this.state, loading: false })
+})
 }
 
 
@@ -224,8 +242,9 @@ class ClientDeposit extends Component {
 
   render() {
 
-    const { loading, data, params, valPerPage, balance} = this.state
+    const { loading, data, params, valPerPage, balance, client} = this.state
     const { type } = this.props
+    console.log('render', client)
  
       
     return (
@@ -261,10 +280,10 @@ class ClientDeposit extends Component {
           <p>1. Client diharapkan melakukan setoran ke salah satu rekening Billfazz yang tertera dibawah ini:</p>
           <p>*BRI 4300-1000-650-307 A.N PT.Billfazz Teknologi Nusantara</p>
           <p>*BCA 501-579-0781 A.N PT.Billfazz Teknologi Nusantara</p>
-          <p>2. Nominal deposit diharapkan disesuaikan juga dengan kode setoran yang berupa client ID (*12).</p>
+          <p>2. Nominal deposit diharapkan disesuaikan juga dengan kode setoran yang berupa client ID [{client.id}].</p>
           <p>contoh</p>
           <p>Anda ingin menyetor deposit Rp.100.000.000</p>
-          <p>*  Client ID</p>
+          <p>*  Client ID [{client.id}]</p>
           <p>*  Total yang disetorkan: Rp.  100.000.012*</p>
           <p>3. Masukan "Deposit(Nama Client)" di keterangan transfer.></p>
           <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>

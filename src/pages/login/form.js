@@ -79,7 +79,7 @@ class FormSignIn extends Component {
     return (
       <Form onSubmit={this.submitSignin}>
         <Form.Item>
-          <label class="login-form">Client ID</label>
+          <label className="login-form">Client ID</label>
           <Input
             required
             name="clientID"
@@ -88,7 +88,7 @@ class FormSignIn extends Component {
             onChange={this.changeClientID}
           />
         </Form.Item>
-        <label class="login-form">Username</label>
+        <label className="login-form">Username</label>
         <Form.Item>
           <Input
             required
@@ -98,7 +98,7 @@ class FormSignIn extends Component {
             onChange={this.changeUsername}
           />
         </Form.Item>
-        <label class="login-form">Password</label>
+        <label className="login-form">Password</label>
         <Form.Item>
           <Input
             required
