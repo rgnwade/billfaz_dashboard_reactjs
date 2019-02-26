@@ -33,7 +33,7 @@ class App extends Component {
 
   logout = () => {
     UserApi.logout()
-      .then(() => BACK_TO_LOGIN())
+      .then(() => BACK_TO_LOGIN({ isLogout: true }))
       .catch(err => message.error(getErrorMessage(err) || 'Logout failed. Please try again'))
   }
 

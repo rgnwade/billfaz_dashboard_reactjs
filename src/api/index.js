@@ -27,7 +27,7 @@ export const configApi = ({ contentType } = {}) => {
 }
 
 // Destroy access
-export const BACK_TO_LOGIN = async (isExpired = false) => {
+export const BACK_TO_LOGIN = async ({ isExpired = false, isLogout = false } = {}) => {
   const cookies = new Cookies()
   await cookies.remove(CONFIG_COOKIES.TOKEN)
   if (cookies.get(CONFIG_COOKIES.TOKEN)) {
@@ -38,7 +38,14 @@ export const BACK_TO_LOGIN = async (isExpired = false) => {
   await cookies.remove(CONFIG_COOKIES.PERMISSION)
   await cookies.remove(CONFIG_COOKIES.ROLE_NAME)
   await cookies.remove(CONFIG_COOKIES.EMAIL)
-  window.location.href = isExpired ? `${MENU.LOGIN}?isExpired=true` : MENU.HOME
+  const loc = isLogout
+    ? `${MENU.LOGIN}?isLogout=true`
+    : (
+      isExpired
+        ? `${MENU.LOGIN}?isLogout=true`
+        : MENU.HOME
+    )
+  window.location.href = loc
 }
 
 // For handle 401 status
@@ -52,7 +59,7 @@ axios.interceptors.response.use(
         || (err.response.status === 403 && err.response.data.code === 'ClientUnauthorizedError')
       )
     ) {
-      BACK_TO_LOGIN(true)
+      BACK_TO_LOGIN({ isExpired: true })
     }
     return Promise.reject(err)
   },
