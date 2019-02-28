@@ -27,17 +27,18 @@ export const configApi = ({ contentType } = {}) => {
 }
 
 // Destroy access
-export const BACK_TO_LOGIN = async ({ isExpired = false, isLogout = false } = {}) => {
+export const clearBrowserData = async () => {
   const cookies = new Cookies()
   await cookies.remove(CONFIG_COOKIES.TOKEN)
-  if (cookies.get(CONFIG_COOKIES.TOKEN)) {
-    document.cookie = `${CONFIG_COOKIES.TOKEN}=;`
-  }
   await cookies.remove(CONFIG_COOKIES.ROLE)
   await cookies.remove(CONFIG_COOKIES.USERNAME)
   await cookies.remove(CONFIG_COOKIES.PERMISSION)
   await cookies.remove(CONFIG_COOKIES.ROLE_NAME)
   await cookies.remove(CONFIG_COOKIES.EMAIL)
+}
+
+export const BACK_TO_LOGIN = async ({ isExpired = false, isLogout = false } = {}) => {
+  clearBrowserData()
   const loc = isLogout
     ? `${MENU.LOGIN}?isLogout=true`
     : (

@@ -8,7 +8,7 @@ import FormLogin from './form'
 import Logo from '../../assets/billfazz-logo-29.png'
 import { getCookies } from '../../utils/cookies'
 import { CONFIG_COOKIES } from '../../config/cookies'
-import { AuthApi } from '../../api'
+import { AuthApi, clearBrowserData } from '../../api'
 import MENU from '../../config/menu'
 import './login.scss'
 
@@ -22,9 +22,11 @@ class Login extends Component {
     const { location } = this.props
     const parsedQuery = qs.parse(location.search.replace('?', ''))
     if (parsedQuery.isLogout) {
+      clearBrowserData()
       return
     }
     if (parsedQuery.isExpired) {
+      clearBrowserData()
       message.error('Session may be expired. Please login again')
       return
     }
