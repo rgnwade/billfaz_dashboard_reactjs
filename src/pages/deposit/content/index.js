@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
-import { Card, Table, message, Button, Row, Col, Modal} from 'antd'
+import { Card, Table, Button, Row, Col, Modal} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-// import { OPTIONS_CONFIG_DEPOSIT } from '../../../config/options'
 import TableControl from '../../../components/table-control'
-// import moment from 'moment'
-// import Filter from '../../../components/filter'
 import columns from './columns'
 import { DepositApi, UserApi } from '../../../api'
-// import TopupModal from '../modal'
-// import { moneyToNumber } from '../../../utils/formatter/currency'
-import { getErrorMessage } from '../../../utils/error/api'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
 import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../../../utils/url-query-params'
 import MENU from '../../../config/menu'
@@ -18,61 +12,6 @@ import { hasAccess } from '../../../utils/roles'
 import { ROLES_ITEMS } from '../../../config/roles'
 import DepositReport from '../report'
 import { numberToMoney } from '../../../utils/formatter/currency'
-
-
-class FormExport extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      action: '',
-      dateStart: '',
-      timeStart: '',
-      dateEnd: '',
-      timeEnd: '',
-    }
-  }
-  changeAction = e => this.setState({ action: e.target.value })
-
-  changeDateStart = e => this.setState({ dateStart: e.target.value })
-
-  changeTimeStart = e => this.setState({ timeStart: e.target.value })
-
-  changeDateEnd= e => this.setState({ dateEnd: e.target.value })
-
-  changeTimeEnd = e => this.setState({ timeEnd: e.target.value })
-
-
-  submitExport = async (e) => {
-    e.preventDefault()
-    await this.setState({ ...this.state, loading: true })
-    const { action, dateStart, timeStart, dateEnd, timeEnd  } = this.state
-    const ex = await DepositApi.exportData({ action, dateStart, timeStart, dateEnd, timeEnd} )
-      .then((res) => {
-        return res.data.ex
-      })
-      .catch((err) => {
-        this.setState({ ...this.state, loading: false })
-        message.error(getErrorMessage(err) || 'Export Failed')
-        return false
-      })
-    if (ex) {
-      await this.getPermission()
-      this.props.history.push(MENU.ORDER)
-    }
-  }
-}
-
-// const Option = Select.Option;
-// function handleChange(value) {
-//   console.log(`selected ${value}`);
-// }
-
-// const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
-// function onChange(date, dateString) {
-//   console.log(date, dateString);
-// }
-
-// const format = 'HH:mm';
 
 class ClientDeposit extends Component {
   constructor(props) {
@@ -84,6 +23,7 @@ class ClientDeposit extends Component {
       count: 0,
       params: {
         page: 1,
+        code: ''
       },
       valPerPage: 0,
       selected: {},
@@ -132,27 +72,27 @@ class ClientDeposit extends Component {
     const { type } = this.props
     await this.setState({ ...this.state, loading: true })
     if (params.action === '') delete params.action
-    DepositApi.get(type, params)
-      .then((res) => {
-        const data = res.data
-        this.setState({
-          ...this.state,
-          data: data || [],
-          count: res.data.count,
-          loading: false,
-          params,
-          valPerPage: (data || []).length,
-        })
+
+    try {
+      let res = await DepositApi.get(type, params)
+      const data = res.data
+
+      this.setState({
+        ...this.state,
+        data: data || [],
+        count: res.data.count,
+        loading: false,
+        params,
+        valPerPage: (data || []).length,
       })
-      .catch(() => {
-        this.setState({ ...this.state, loading: false })
-      })
+    }catch(e) {
+      this.setState({ ...this.state, loading: false })
+    }
   }
 
   getBalance = () => {
     DepositApi.getBalance()
     .then(res => {
-      console.log(res)
       const balance = res.data.balance;
       this.setState({ balance });
     })
@@ -164,7 +104,6 @@ class ClientDeposit extends Component {
 getClient = () => {
   UserApi.get()
   .then((res) => {
-    console.log(res)
     this.setState({
       ...this.state,
       client: {
@@ -172,11 +111,10 @@ getClient = () => {
       },
     })
   })
-.catch(() => {
-  this.setState({ ...this.state, loading: false })
-})
+  .catch(() => {
+    this.setState({ ...this.state, loading: false })
+  })
 }
-
 
   changeFilter = (value, field) => {
     const { params } = this.state
@@ -187,15 +125,15 @@ getClient = () => {
     const { value } = e.target
     const { params } = this.state
     if (value) {
-      this.setState({ ...this.state, params: { ...params, page: 1, searchQuery: value } })
+      this.setState({ ...this.state, params: { ...params, page: 1, code: value } })
     } else {
-      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, searchQuery: '' })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, code: '' })
     }
   }
 
   search = (searchValue) => {
     const { params } = this.state
-    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, searchQuery: searchValue })
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, code: searchValue })
   }
 
   handlePrevPage = () => {
@@ -226,14 +164,12 @@ getClient = () => {
   }
    
   handleOke = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   }
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
@@ -241,15 +177,11 @@ getClient = () => {
 
 
   render() {
-
     const { loading, data, params, valPerPage, balance, client} = this.state
     const { type } = this.props
-    console.log('render', client)
- 
-      
+
     return (
-      <div>
-     
+      <div>     
         <TableControl
           search={this.search}
           valPage={params.page}
@@ -259,49 +191,44 @@ getClient = () => {
           loading={loading}
           searchText={type === DEPOSIT_TYPES.CLIENTS ? 'Order ID' : 'Provider Name'}
           disableSearch={type === DEPOSIT_TYPES.PROVIDERS}
-          searchValue={params.searchQuery}
+          searchValue={params.code}
           changeSearch={this.changeSearch}
         />
-       
-       <Row>
-       <Col span={24}>
-          
+        <Row>
+          <Col span={24}>
             <div className="app-actions__right">
-              <a className="total">Total Deposit</a>
-              <div className="top-up">{numberToMoney(balance)}
-              </div>
+              <span className="total">Total Deposit</span>
+              <div className="top-up">{numberToMoney(balance)}</div>
               <Button htmlType="submit" className="top-up" onClick={this.showModal} loading={loading} type="primary">TOP UP</Button>
-                <Modal
-          title="Top Up Information"
-          visible={this.state.visible}
-          onOk={this.handleOke}
-          onCancel={this.handleCancel}
-        >
-          <p>1. Client diharapkan melakukan setoran ke salah satu rekening Billfazz yang tertera dibawah ini:</p>
-          <p>*BRI 4300-1000-650-307 A.N PT.Billfazz Teknologi Nusantara</p>
-          <p>*BCA 501-579-0781 A.N PT.Billfazz Teknologi Nusantara</p>
-          <p>2. Nominal deposit diharapkan disesuaikan juga dengan kode setoran yang berupa client ID [{client.id}].</p>
-          <p>contoh</p>
-          <p>Anda ingin menyetor deposit Rp.100.000.000</p>
-          <p>*  Client ID [{client.id}]</p>
-          <p>*  Total yang disetorkan: Rp.  100.000.00{client.id}*</p>
-          <p>3. Masukan "Deposit(Nama Client)" di keterangan transfer.></p>
-          <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>
-          <p>5. Deposit dilakukan paling lambat pukul 21.00 setiap harinya</p>
-        </Modal>
-              </div>
-              </Col>
-           </Row>
+              <Modal
+                title="Top Up Information"
+                visible={this.state.visible}
+                onOk={this.handleOke}
+                onCancel={this.handleCancel}
+              >
+                <p>1. Client diharapkan melakukan setoran ke salah satu rekening Billfazz yang tertera dibawah ini:</p>
+                <p>*BRI 4300-1000-650-307 A.N PT.Billfazz Teknologi Nusantara</p>
+                <p>*BCA 501-579-0781 A.N PT.Billfazz Teknologi Nusantara</p>
+                <p>2. Nominal deposit diharapkan disesuaikan juga dengan kode setoran yang berupa client ID [{client.id}].</p>
+                <p>contoh</p>
+                <p>Anda ingin menyetor deposit Rp.100.000.000</p>
+                <p>*  Client ID [{client.id}]</p>
+                <p>*  Total yang disetorkan: Rp.  100.000.00{client.id}*</p>
+                <p>3. Masukan "Deposit(Nama Client)" di keterangan transfer.></p>
+                <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>
+                <p>5. Deposit dilakukan paling lambat pukul 21.00 setiap harinya</p>
+              </Modal>
+            </div>
+          </Col>
+        </Row>
 
-
-           {/* <Filter left={leftFilter} right={rightFilter}/> */}
-           <DepositReport />
-
+        <DepositReport />
+        
         <Card>
           <Table
             className="table-responsive"
             loading={loading}
-            // rowKey={type === DEPOSIT_TYPES.CLIENTS ? 'id' : 'provider'}
+            rowKey="createdAt"
             dataSource={data}
             columns={columns[type](this.clickTopup, hasAccess(ROLES_ITEMS.DEPOSIT_TOPUP))}
             pagination={false}

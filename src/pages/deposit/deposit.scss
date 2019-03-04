@@ -26,41 +26,38 @@
   font-size: 12px; 
 }
 
-.ant-calendar-picker{
-  margin-left: 15px !important;
-}
-
-.ant-time-picker{
-  margin-left: 15px !important;
-}
-
 .deposit-small-text{
   margin: 15px !important;
 }
 
-.apps__status.--payment{
-  background-color: #a1cd43;
-  padding: 0.25em 1em;
-border-radius: 4px;
-color: white;
-text-transform: capitalize;
-margin-right: 2px;
-}
+.apps__status {
+  width: 100px;
+  text-align: center;
 
-.apps__status.--topup{
-  background-color: #eaa844;
-  padding: 0.25em 1em;
-border-radius: 4px;
-color: white;
-text-transform: capitalize;
-margin-right: 2px;
-}
+  &.--payment{
+    background-color: #a1cd43;
+    padding: 0.25em 1em;
+    border-radius: 4px;
+    color: white;
+    text-transform: capitalize;
+    margin-right: 2px;
+  }
 
-.apps__status.--refund{
-  background-color: #e17273;
-  padding: 0.25em 1em;
-border-radius: 4px;
-color: white;
-text-transform: capitalize;
-margin-right: 2px;
+  &.--topup{
+    background-color: #eaa844;
+    padding: 0.25em 1em;
+    border-radius: 4px;
+    color: white;
+    text-transform: capitalize;
+    margin-right: 2px;
+  }
+
+  &.--refund{
+    background-color: #e17273;
+    padding: 0.25em 1em;
+    border-radius: 4px;
+    color: white;
+    text-transform: capitalize;
+    margin-right: 2px;
+  }
 }
