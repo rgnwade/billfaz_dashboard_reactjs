@@ -5,7 +5,7 @@ export default ({ url, config, defaultParams }) => {
   const endpointClientProducts = 'v1/clientproducts'
   return {
     // products
-    get: (type, params) => axios.get(`${url}${endpoint}`, { ...config(), params: { ...defaultParams, ...params,limited:true }, }),
+    get: (params) => axios.get(`${url}${endpoint}`, { ...config(), params: { ...defaultParams, ...params,limited:true }, }),
     getOne: id => axios.get(`${url}${endpoint}/${id}`, config()),
     update: (id, data) => axios.post(`${url}${endpoint}/${id}/update`, data, config()),
     getAvailableProducts: clientId => axios.get(`${url}${endpoint}/available?clientId=${clientId}`, config()),
