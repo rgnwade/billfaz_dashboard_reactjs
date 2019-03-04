@@ -1,7 +1,6 @@
 import React from 'react'
-// import { Button } from 'antd'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
-// import { datetimeToLocal } from '../../../utils/formatter/datetime'
+import { datetimeToLocal } from '../../../utils/formatter/datetime'
 import { numberToMoney } from '../../../utils/formatter/currency'
 import '../deposit.scss'
 
@@ -10,16 +9,18 @@ const columnFields = {
     title: 'Created Date',
     dataIndex:'createdAt',
     key:'createdAt',
-    render: (text)  => (
-      <div>{(text)}</div>
-    ),
+    render: (text)  => {
+      let temp = text.split(/-| /);
+      text = `${temp[2]}/${temp[1]}/${temp[0]} ${temp[3]}`;
+      return <div>{datetimeToLocal(text)}</div>;
+    },
   },
   transaction: {
     title: 'Order ID',
     dataIndex:'orderId',
     key:'orderId',
     render: text => (
-      <div>{text}</div>
+      <div>{text || '-'}</div>
     ),
   },
   amount: {
@@ -65,13 +66,13 @@ const columnFields = {
     title: 'Operation',
     dataIndex: 'action',
     key: 'action',
+    width: '10%',
     render: (text, record) => (
-      <div style={{ width: '150px' }}>
-      <span className={`apps__status --${text}`}>{text}</span>
-    </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+        <span className={`apps__status --${text}`}>{text}</span>
+      </div>
     ),
   }
-  
 }
 
 const columns = {
