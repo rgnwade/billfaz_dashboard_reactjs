@@ -9,9 +9,9 @@ import { ProductApi } from '../../../api'
 import { OPTIONS_CONFIG_ACTIVE } from '../../../config/product'
 import { parseUrlQueryParams, compareParams, generateUrlQueryParams } from '../../../utils/url-query-params'
 import MENU from '../../../config/menu'
-import { PRODUCT_TABS } from '../../../config/product'
-import { hasAccess } from '../../../utils/roles'
-import { ROLES_ITEMS } from '../../../config/roles'
+// import { PRODUCT_TABS } from '../../../config/product'
+// import { hasAccess } from '../../../utils/roles'
+// import { ROLES_ITEMS } from '../../../config/roles'
 import './product-list.scss'
 
 const columnFields = {
@@ -72,10 +72,11 @@ class ProductList extends Component {
       },
       valPerPage: 0,
       providers: [],
-      hasAccessEdit: hasAccess(ROLES_ITEMS.PRODUCT_UPDATE),
-      hasAccessEditFields: {
-        status: hasAccess(ROLES_ITEMS.PRODUCT_EDIT_STATUS),
-      },
+      selected: {},
+      // hasAccessEdit: hasAccess(ROLES_ITEMS.PRODUCT_UPDATE),
+      // hasAccessEditFields: {
+      //   status: hasAccess(ROLES_ITEMS.PRODUCT_EDIT_STATUS),
+      // },
     }
   }
 
@@ -109,25 +110,25 @@ class ProductList extends Component {
   }
 
   getData = async (params = this.state.params) => {
+    // const { type } = this.props
     await this.setState({ ...this.state, loading: true })
-    if (params.active === '') delete params.active
-    if (params.problem === '') delete params.problem
-    ProductApi.get(params)
-      .then((res) => {
-        const data = (res.data.data || []).map((dt, idx) => ({ ...dt, idx }))
-        this.setState({
-          ...this.state,
-          data,
-          originalData: data.map(dt => ({ ...dt })),
-          count: res.data.count,
-          loading: false,
-          params,
-          valPerPage: data.length,
-        })
+    if (params.action === '') delete params.action
+   
+    try {
+      let res = await ProductApi.get(params)
+      
+      const data = res.data.data
+      this.setState({
+        ...this.state,
+        data: data || [],
+        count: res.data.data.count,
+        loading: false,
+        params,
+        valPerPage: (data || []).length ,
       })
-      .catch(() => {
-        this.setState({ ...this.state, loading: false })
-      })
+    }catch(e) {
+      this.setState({ ...this.state, loading: false })
+    }
   }
 
   getFilterData = () => {
@@ -152,6 +153,7 @@ class ProductList extends Component {
 
   handleNextPage = () => {
     const { params } = this.state
+    console.log(params)
     this.addUrlQueryParamsAndUpdateData({ ...params, page: params.page + 1 })
   }
 
@@ -163,7 +165,7 @@ class ProductList extends Component {
   addUrlQueryParams = (params) => {
     const { history } = this.props
     const query = generateUrlQueryParams(params)
-    history.push(`${MENU.PRODUCT}/${PRODUCT_TABS.LIST}?${query}`)
+    history.push(`${MENU.PRODUCT}/${query}`)
   }
 
   render() {
@@ -196,12 +198,14 @@ class ProductList extends Component {
           searchText="Product Name or Product code"
           searchValue={params.searchQuery}
           changeSearch={this.changeSearch}
+     
         />
         <Filter left={leftFilter} />
         <Card>
           <Table 
-            className="table-responsive --big" 
+            className="table-responsive" 
             loading={loading} 
+            rowKey="name"
             dataSource={data}
             columns={columns} 
             pagination={false} 
