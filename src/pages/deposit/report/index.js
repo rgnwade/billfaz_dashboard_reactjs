@@ -7,6 +7,7 @@ import { DEPOSIT_REPORT_STATUS } from '../../../config/deposit'
 import './deposit-report.scss'
 
 const formatTime = 'HH:mm';
+const formatDate = 'DD-MM-YYYY';
 
 class Report extends Component {
   constructor(props) {
@@ -83,7 +84,7 @@ class Report extends Component {
               <div className="filter-block">
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker className="filter-input" value={data.dateStart} onChange={e => this.changeInput(e, 'dateStart')} />
+                  <DatePicker className="filter-input" format={formatDate} value={data.dateStart} onChange={e => this.changeInput(e, 'dateStart')} />
                 </div>
               </div>
               <div className="filter-block">
@@ -98,7 +99,7 @@ class Report extends Component {
               <div className="filter-block">
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker className="filter-input" value={data.dateEnd} onChange={e => this.changeInput(e, 'dateEnd')} />
+                  <DatePicker className="filter-input" format={formatDate} value={data.dateEnd} onChange={e => this.changeInput(e, 'dateEnd')} />
                 </div>
               </div>
               <div className="filter-block">

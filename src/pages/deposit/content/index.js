@@ -104,6 +104,7 @@ class ClientDeposit extends Component {
 getClient = () => {
   UserApi.get()
   .then((res) => {
+    console.log(res)
     this.setState({
       ...this.state,
       client: {
@@ -214,7 +215,7 @@ getClient = () => {
                 <p>Anda ingin menyetor deposit Rp.100.000.000</p>
                 <p>*  Client ID [{client.id}]</p>
                 <p>*  Total yang disetorkan: Rp.  100.000.00{client.id}*</p>
-                <p>3. Masukan "Deposit(Nama Client)" di keterangan transfer.></p>
+                <p>3. Masukan "Deposit{client.name}" di keterangan transfer.></p>
                 <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>
                 <p>5. Deposit dilakukan paling lambat pukul 21.00 setiap harinya</p>
               </Modal>

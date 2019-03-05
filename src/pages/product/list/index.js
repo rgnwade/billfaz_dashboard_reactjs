@@ -186,6 +186,7 @@ class ProductList extends Component {
         </div>
       </div>
     )
+    console.log(params.active )
     return (
       <div>
         <TableControl
