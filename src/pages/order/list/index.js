@@ -165,7 +165,7 @@ class OrderList extends Component {
               <div style={{ marginRight: '1em' }}>
                 <label className="small-text">Status:</label>
                 <div>
-                  <Select style={{ width: 150 }} onChange={e => this.changeFilter(e, 'status')}>
+                  <Select defaultValue="All Status" style={{ width: 150 }} onChange={e => this.changeFilter(e, 'status')}>
                     {
                       ORDER_REPORT_STATUS.map(status => (
                         <Select.Option key={status.code}  value={status.title}>{status.name}</Select.Option>
