@@ -75,20 +75,13 @@ const columnFields = {
   }
 }
 
-const columns = {
-  [DEPOSIT_TYPES.CLIENTS]: (topupClick, hasAccessTopup) => [
+const columns= [
     columnFields.createdDate,
     columnFields.transaction,
     columnFields.amount,
     columnFields.balanceBefore,
     columnFields.balanceAfter,
     columnFields.operation
-    // columnFields.topup(topupClick, hasAccessTopup),
-  ]
-  // [DEPOSIT_TYPES.PROVIDERS]: () => [
-  //   columnFields.providerClientCode,
-  //   columnFields.balanceAfter,
-  // ],
-}
+];
 
 export default columns

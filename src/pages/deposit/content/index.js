@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
-import { Card, Table, Button, Row, Col, Modal} from 'antd'
+import { Card, Table, Button, Row, Col,message, Modal, DatePicker, Select, TimePicker} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import TableControl from '../../../components/table-control'
 import columns from './columns'
 import { DepositApi, UserApi } from '../../../api'
 import { DEPOSIT_TYPES } from '../../../config/deposit'
+import { DEPOSIT_REPORT_STATUS } from '../../../config/deposit'
 import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../../../utils/url-query-params'
 import MENU from '../../../config/menu'
 import { hasAccess } from '../../../utils/roles'
 import { ROLES_ITEMS } from '../../../config/roles'
-import DepositReport from '../report'
+// import DepositReport from '../report'
 import { numberToMoney } from '../../../utils/formatter/currency'
+import { getError } from '../../../utils/error/api'
+import dayjs from 'dayjs'
+import './deposit-report.scss'
+
+const formatTime = 'HH:mm';
+const formatDate = 'DD-MM-YYYY';
 
 class ClientDeposit extends Component {
   constructor(props) {
@@ -25,14 +32,17 @@ class ClientDeposit extends Component {
         page: 1,
         code: ''
       },
+      datas: {
+        action: DEPOSIT_REPORT_STATUS[0].code,
+      },
       valPerPage: 0,
       selected: {},
       modal: false,
       modalData: {},
       client: {},
+      total: {},
     }
   }
-
  
   componentDidMount() {
     const { location } = this.props
@@ -43,11 +53,55 @@ class ClientDeposit extends Component {
 
   componentDidUpdate(prevProps) {
     const { params, loading } = this.state
-    const { location, active } = this.props
-    if ((active && !loading && compareParams(prevProps.location, location, params)) || (!prevProps.active && active)) {
+    const { location, action } = this.props
+    if ((action && !loading && compareParams(prevProps.location, location, params)) || (!prevProps.action && action)) {
       this.getData(parseUrlQueryParams(location.search))
     }
   }
+
+    //report
+
+    clickSendReport = async () => {
+      const { datas } = this.state
+      const thisEl = this
+      await this.setState({ ...this.state, loading: true })
+      Modal.confirm({
+        title: 'Export Data Confirmation',
+        content: 'This data will be downloaded to your device',
+        onOk() {
+          const payload = {
+            filterType: 'period',
+            action: datas.action,
+            dateStart: datas.dateStart ? datas.dateStart.format('YYYY-MM-DD') : '',
+            timeStart: datas.timeStart ? datas.timeStart.format('HH:mm') : '',
+            dateEnd: datas.dateEnd ? datas.dateEnd.format('YYYY-MM-DD') : '',
+            timeEnd: datas.timeEnd ? datas.timeEnd.format('HH:mm') : '',
+          }
+          DepositApi.exportData(payload)
+          .then((res) => {
+            message.success('Export data success')
+            const dataExport = new Blob([res.data], { type: 'text/csv' })
+              const csvURL = window.URL.createObjectURL(dataExport)
+              const element = document.createElement('a')
+              element.href = csvURL
+              element.setAttribute('download', `export-deposit-${dayjs().format('YYYYMMDDHHmmssSSS')}.csv`)
+              document.body.appendChild(element)
+              element.click()
+              document.body.removeChild(element)
+            thisEl.setState({ ...thisEl.state, datas: { status: 'all' }, loading: false })
+          })
+          .catch((err) => {
+            message.error(getError(err) || 'Export data failed')
+            thisEl.setState({ ...thisEl.state, loading: false })
+          })
+        },
+      })
+    }
+  
+    changeInput = (value, field) => {
+      const { datas } = this.state
+      this.setState({ ...this.state, datas: { ...datas, [field]: value } });
+    }
 
   changeModalDataStatus = (issuedStatus) => {
     const { modalData } = this.state
@@ -69,14 +123,12 @@ class ClientDeposit extends Component {
   }
 
   getData = async (params = this.state.params) => {
-    const { type } = this.props
     await this.setState({ ...this.state, loading: true })
     if (params.action === '') delete params.action
 
     try {
-      let res = await DepositApi.get(type, params)
+      let res = await DepositApi.get(params)
       const data = res.data
-
       this.setState({
         ...this.state,
         data: data || [],
@@ -104,7 +156,6 @@ class ClientDeposit extends Component {
 getClient = () => {
   UserApi.get()
   .then((res) => {
-    console.log(res)
     this.setState({
       ...this.state,
       client: {
@@ -115,6 +166,11 @@ getClient = () => {
   .catch(() => {
     this.setState({ ...this.state, loading: false })
   })
+}
+
+clientID = () => {
+  const { client } = this.state
+  this.setState({...this.state, total:{...client.id}, })
 }
 
   changeFilter = (value, field) => {
@@ -153,9 +209,9 @@ getClient = () => {
   }
 
   addUrlQueryParams = (params) => {
-    const { history, type } = this.props
+    const { history} = this.props
     const query = generateUrlQueryParams(params)
-    history.push(`${MENU.DEPOSIT}/${type}?${query}`)
+    history.push(`${MENU.DEPOSIT}/${query}`)
   }
 
   showModal = () => {
@@ -178,11 +234,12 @@ getClient = () => {
 
 
   render() {
-    const { loading, data, params, valPerPage, balance, client} = this.state
-    const { type } = this.props
+    const { loading, data, params, valPerPage, balance, client, datas} = this.state
+    // const { type } = this.props
 
     return (
-      <div>     
+      <div>
+        {/* {this.clientID()}      */}
         <TableControl
           search={this.search}
           valPage={params.page}
@@ -190,8 +247,8 @@ getClient = () => {
           handlePrevPage={this.handlePrevPage}
           handleNextPage={this.handleNextPage}
           loading={loading}
-          searchText={type === DEPOSIT_TYPES.CLIENTS ? 'Order ID' : 'Provider Name'}
-          disableSearch={type === DEPOSIT_TYPES.PROVIDERS}
+          searchText='Order ID'
+          // disableSearch={type === DEPOSIT_TYPES.PROVIDERS}
           searchValue={params.code}
           changeSearch={this.changeSearch}
         />
@@ -214,7 +271,7 @@ getClient = () => {
                 <p>contoh</p>
                 <p>Anda ingin menyetor deposit Rp.100.000.000</p>
                 <p>*  Client ID [{client.id}]</p>
-                <p>*  Total yang disetorkan: Rp.  100.000.00{client.id}*</p>
+                <p>*  Total yang disetorkan:* Rp.100.000.00{client.id}</p>
                 <p>3. Masukan "Deposit{client.name}" di keterangan transfer.></p>
                 <p>4. Konfirmasi manual dengan mengirimkan bukti transfer melalui grup customer service Billfazz, cc: Finance Billfazz.</p>
                 <p>5. Deposit dilakukan paling lambat pukul 21.00 setiap harinya</p>
@@ -223,7 +280,62 @@ getClient = () => {
           </Col>
         </Row>
 
-        <DepositReport />
+        <div className="order-report">
+        <Card>
+          <div className="order-report__content">
+            <div className="flex">
+              <div className="filter-block">
+                <label className="small-text">Operation:</label>
+                <div>
+                  <Select value={datas.action || ''} className="filter-input" onChange={e => this.changeFilter(e, 'action')}>
+                    {
+                      DEPOSIT_REPORT_STATUS.map(action => (
+                        <Select.Option key={action.code} value={action.code}>{action.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </div>
+              </div>
+              <div className="filter-block">
+                <label className="small-text">Date:</label>
+                <div>
+                  <DatePicker className="filter-input" format={formatDate} value={datas.dateStart} onChange={e => this.changeInput(e, 'dateStart')} />
+                </div>
+              </div>
+              <div className="filter-block">
+                <label className="small-text">Time:</label>
+                <div>
+                  <TimePicker className="filter-input" format={formatTime} value={datas.timeStart} onChange={e => this.changeInput(e, 'timeStart')} />
+                </div>
+              </div>
+              <div className="filter-block" style={{ marginTop: '26px' }}>
+                To
+              </div>
+              <div className="filter-block">
+                <label className="small-text">Date:</label>
+                <div>
+                  <DatePicker className="filter-input" format={formatDate} value={datas.dateEnd} onChange={e => this.changeInput(e, 'dateEnd')} />
+                </div>
+              </div>
+              <div className="filter-block">
+                <label className="small-text">Time:</label>
+                <div>
+                  <TimePicker className="filter-input" format={formatTime} value={datas.timeEnd} onChange={e => this.changeInput(e, 'timeEnd')} />
+                </div>
+              </div>
+            </div>
+            <Button
+              className="btn-oval"
+              type="primary"
+              loading={loading}
+              onClick={this.clickSendReport}
+              disabled={!(datas.dateStart && datas.dateEnd && datas.timeStart && datas.timeEnd)}
+            >
+              EXPORT DATA
+            </Button>
+          </div>
+        </Card>
+      </div>
         
         <Card>
           <Table
@@ -231,7 +343,7 @@ getClient = () => {
             loading={loading}
             rowKey="createdAt"
             dataSource={data}
-            columns={columns[type](this.clickTopup, hasAccess(ROLES_ITEMS.DEPOSIT_TOPUP))}
+            columns={columns}
             pagination={false}
           />
         </Card>
@@ -241,8 +353,8 @@ getClient = () => {
 }
 
 ClientDeposit.propTypes = {
-  type: PropTypes.string.isRequired,
-  active: PropTypes.bool.isRequired,
+  // type: PropTypes.string.isRequired,
+  // action: PropTypes.bool.isRequired,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 }

@@ -13,7 +13,7 @@ class Report extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: {
+      datas: {
         action: DEPOSIT_REPORT_STATUS[0].code,
       },
       loading: false,
@@ -21,7 +21,7 @@ class Report extends Component {
   }
 
   clickSendReport = async () => {
-    const { data } = this.state
+    const { datas } = this.state
     const thisEl = this
     await this.setState({ ...this.state, loading: true })
     Modal.confirm({
@@ -30,11 +30,11 @@ class Report extends Component {
       onOk() {
         const payload = {
           filterType: 'period',
-          action: data.action,
-          dateStart: data.dateStart ? data.dateStart.format('YYYY-MM-DD') : '',
-          timeStart: data.timeStart ? data.timeStart.format('HH:mm') : '',
-          dateEnd: data.dateEnd ? data.dateEnd.format('YYYY-MM-DD') : '',
-          timeEnd: data.timeEnd ? data.timeEnd.format('HH:mm') : '',
+          action: datas.action,
+          dateStart: datas.dateStart ? datas.dateStart.format('YYYY-MM-DD') : '',
+          timeStart: datas.timeStart ? datas.timeStart.format('HH:mm') : '',
+          dateEnd: datas.dateEnd ? datas.dateEnd.format('YYYY-MM-DD') : '',
+          timeEnd: datas.timeEnd ? datas.timeEnd.format('HH:mm') : '',
         }
         DepositApi.exportData(payload)
         .then((res) => {
@@ -47,7 +47,7 @@ class Report extends Component {
             document.body.appendChild(element)
             element.click()
             document.body.removeChild(element)
-          thisEl.setState({ ...thisEl.state, data: { status: 'all' }, loading: false })
+          thisEl.setState({ ...thisEl.state, datas: { status: 'all' }, loading: false })
         })
         .catch((err) => {
           message.error(getError(err) || 'Export data failed')
@@ -58,12 +58,12 @@ class Report extends Component {
   }
 
   changeInput = (value, field) => {
-    const { data } = this.state
-    this.setState({ ...this.state, data: { ...data, [field]: value } });
+    const { datas } = this.state
+    this.setState({ ...this.state, datas: { ...datas, [field]: value } });
   }
 
   render() {
-    const { data, loading } = this.state
+    const { datas, loading } = this.state
     return (
       <div className="order-report">
         <Card>
@@ -72,7 +72,7 @@ class Report extends Component {
               <div className="filter-block">
                 <label className="small-text">Operation:</label>
                 <div>
-                  <Select value={data.action} className="filter-input" onChange={e => this.changeInput(e, 'action')}>
+                  <Select value={datas.action} className="filter-input" onChange={e => this.changeInput(e, 'action')}>
                     {
                       DEPOSIT_REPORT_STATUS.map(action => (
                         <Select.Option key={action.code} value={action.code}>{action.name}</Select.Option>
@@ -84,13 +84,13 @@ class Report extends Component {
               <div className="filter-block">
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker className="filter-input" format={formatDate} value={data.dateStart} onChange={e => this.changeInput(e, 'dateStart')} />
+                  <DatePicker className="filter-input" format={formatDate} value={datas.dateStart} onChange={e => this.changeInput(e, 'dateStart')} />
                 </div>
               </div>
               <div className="filter-block">
                 <label className="small-text">Time:</label>
                 <div>
-                  <TimePicker className="filter-input" format={formatTime} value={data.timeStart} onChange={e => this.changeInput(e, 'timeStart')} />
+                  <TimePicker className="filter-input" format={formatTime} value={datas.timeStart} onChange={e => this.changeInput(e, 'timeStart')} />
                 </div>
               </div>
               <div className="filter-block" style={{ marginTop: '26px' }}>
@@ -99,13 +99,13 @@ class Report extends Component {
               <div className="filter-block">
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker className="filter-input" format={formatDate} value={data.dateEnd} onChange={e => this.changeInput(e, 'dateEnd')} />
+                  <DatePicker className="filter-input" format={formatDate} value={datas.dateEnd} onChange={e => this.changeInput(e, 'dateEnd')} />
                 </div>
               </div>
               <div className="filter-block">
                 <label className="small-text">Time:</label>
                 <div>
-                  <TimePicker className="filter-input" format={formatTime} value={data.timeEnd} onChange={e => this.changeInput(e, 'timeEnd')} />
+                  <TimePicker className="filter-input" format={formatTime} value={datas.timeEnd} onChange={e => this.changeInput(e, 'timeEnd')} />
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ class Report extends Component {
               type="primary"
               loading={loading}
               onClick={this.clickSendReport}
-              disabled={!(data.dateStart && data.dateEnd && data.timeStart && data.timeEnd)}
+              disabled={!(datas.dateStart && datas.dateEnd && datas.timeStart && datas.timeEnd)}
             >
               EXPORT DATA
             </Button>

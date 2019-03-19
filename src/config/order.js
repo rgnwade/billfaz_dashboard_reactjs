@@ -16,12 +16,16 @@ export const ORDER_STATUS = {
 export const ORDER_REPORT_STATUS = [
   {
     name: 'All Status',
-    code: 'all',
+    code: '',
+    title:'',
   }, {
     name: 'Success',
     code: 'success',
+    title: '4',
   }, {
     name: 'Failed',
     code: 'failed',
+    title: '3',
   },
 ]
+

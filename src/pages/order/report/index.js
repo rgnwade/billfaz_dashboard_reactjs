@@ -11,7 +11,7 @@ class Report extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: {
+      datas: {
         status: 'all',
       },
       loading: false,
@@ -19,7 +19,7 @@ class Report extends Component {
   }
 
   clickSendReport = async () => {
-    const { data } = this.state
+    const { datas } = this.state
     const thisEl = this
     await this.setState({ ...this.state, loading: true })
     Modal.confirm({
@@ -27,9 +27,9 @@ class Report extends Component {
       content: 'Are you sure?',
       onOk() {
         const payload = {
-          issuedStatus: data.status || '',
-          dateStart: data.startDate ? data.startDate.format('YYYY-MM-DD') : '',
-          dateEnd: data.endDate ? data.endDate.format('YYYY-MM-DD') : '',
+          issuedStatus: datas.status || '',
+          dateStart: datas.startDate ? datas.startDate.format('YYYY-MM-DD') : '',
+          dateEnd: datas.endDate ? datas.endDate.format('YYYY-MM-DD') : '',
         }
         OrderApi.export(payload)
           .then((res) => {
@@ -42,7 +42,7 @@ class Report extends Component {
             document.body.appendChild(element)
             element.click()
             document.body.removeChild(element)
-            thisEl.setState({ ...thisEl.state, data: { status: 'all' }, loading: false })
+            thisEl.setState({ ...thisEl.state, datas: { status: 'all' }, loading: false })
           })
           .catch((err) => {
             message.error(getError(err) || 'Export data failed')
@@ -53,12 +53,13 @@ class Report extends Component {
   }
 
   changeInput = (value, field) => {
-    const { data } = this.state
-    this.setState({ ...this.state, data: { ...data, [field]: value } })
+    const { datas } = this.state
+    this.setState({ ...this.state, datas: { ...datas, [field]: value } })
   }
+  
 
   render() {
-    const { data, loading } = this.state
+    const { datas, loading } = this.state
     return (
       <div className="order-report">
         <Card>
@@ -67,7 +68,7 @@ class Report extends Component {
               <div style={{ marginRight: '1em' }}>
                 <label className="small-text">Status:</label>
                 <div>
-                  <Select defaultValue="" value={data.status} style={{ width: 150 }} onChange={e => this.changeInput(e, 'status')}>
+                  <Select defaultValue={datas.status} value={datas.status} style={{ width: 150 }} onChange={e => this.changeInput(e, 'status')}>
                     {
                       ORDER_REPORT_STATUS.map(status => (
                         <Select.Option key={status.code} value={status.code}>{status.name}</Select.Option>
@@ -79,16 +80,16 @@ class Report extends Component {
               <div style={{ marginRight: '1em' }}>
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker style={{ width: 150 }} value={data.startDate} onChange={e => this.changeInput(e, 'startDate')} />
+                  <DatePicker style={{ width: 150 }} value={datas.startDate} onChange={e => this.changeInput(e, 'startDate')} />
                 </div>
               </div>
-              <div style={{ marginTop: '29px' }}>
+              <div style={{ marginTop: '29px', marginRight: '10px' }}>
                 To
               </div>
               <div style={{ marginRight: '0.5em' }}>
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker style={{ width: 150 }} value={data.endDate} onChange={e => this.changeInput(e, 'endDate')} />
+                  <DatePicker style={{ width: 150 }} value={datas.endDate} onChange={e => this.changeInput(e, 'endDate')} />
                 </div>
               </div>
             </div>
@@ -97,7 +98,7 @@ class Report extends Component {
               type="primary"
               loading={loading}
               onClick={this.clickSendReport}
-              disabled={!(data.startDate && data.endDate)}
+              disabled={!(datas.startDate && datas.endDate)}
             >
               EXPORT DATA
             </Button>

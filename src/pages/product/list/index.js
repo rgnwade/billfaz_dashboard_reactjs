@@ -19,8 +19,11 @@ const columnFields = {
     title: 'Product Name & Code',
     dataIndex:'name',
     key:'name',
-    render: text => (
+    render: (text, data) => (
+      <div>
       <div>{text}</div>
+      <div>[{data.code}]</div>
+      </div>
     ),
   },
   productDescription: {
@@ -28,7 +31,7 @@ const columnFields = {
     dataIndex:'description',
     key:'description',
     render: text => (
-      <div style={{width:'180', whiteSpace:'normal'}}>{text}</div>
+      <div style={{whiteSpace:'normal'}}>{text}</div>
     ),
   },
   price: {
@@ -36,7 +39,7 @@ const columnFields = {
     dataIndex:'sellPrice',
     key:'sellPrice',
     render: text => (
-      <div>{numberToMoney(text)}</div>
+      <div style={{ width: '100px' }}>{numberToMoney(text)}</div>
     ),
   },
   status: {
@@ -44,7 +47,7 @@ const columnFields = {
     dataIndex:'active',
     key:'active',
     render: text => (
-      <div style={{ width: '150px' }}>
+      <div>
         <span className={`apps__status_product --${text ? 'true' : 'false'}`}>{text ? 'Active':'Inactive'}</span>
       </div>
     ),
@@ -186,7 +189,7 @@ class ProductList extends Component {
         </div>
       </div>
     )
-    console.log(params.active )
+    // console.log(params.active )
     return (
       <div>
         <TableControl
