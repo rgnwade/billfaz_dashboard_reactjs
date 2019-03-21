@@ -98,7 +98,14 @@ class OrderList extends Component {
 
   changeFilter = (value, field) => {
     const { params } = this.state
-    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, filterType: value})
+    let paramfilter = value
+    if(value=="failed"){
+      paramfilter="3"
+    }
+    if(value=="success"){
+      paramfilter="4"
+    }
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, filterType: paramfilter})
   }
 
   clickSendReport = async () => {
@@ -168,7 +175,7 @@ class OrderList extends Component {
                   <Select defaultValue="All Status" style={{ width: 150 }} onChange={e => this.changeFilter(e, 'status')}>
                     {
                       ORDER_REPORT_STATUS.map(status => (
-                        <Select.Option key={status.code}  value={status.title}>{status.name}</Select.Option>
+                        <Select.Option key={status.code}  value={status.code}>{status.name}</Select.Option>
                       ))
                     }
                   </Select>

@@ -65,6 +65,7 @@ class ClientDeposit extends Component {
       const { datas } = this.state
       const thisEl = this
       await this.setState({ ...this.state, loading: true })
+      console.log(datas.action)
       Modal.confirm({
         title: 'Export Data Confirmation',
         content: 'This data will be downloaded to your device',
@@ -175,7 +176,11 @@ clientID = () => {
 
   changeFilter = (value, field) => {
     const { params } = this.state
-    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: value })
+    let paramfilter = value
+    if(value=="all"){
+      paramfilter=""
+    }
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: paramfilter })
   }
 
   changeSearch = (e) => {
@@ -208,10 +213,10 @@ clientID = () => {
     this.getData(params)
   }
 
-  addUrlQueryParams = (params) => {
+  addUrlQueryParams = (params,type) => {
     const { history} = this.props
     const query = generateUrlQueryParams(params)
-    history.push(`${MENU.DEPOSIT}/${query}`)
+    history.push(`${MENU.DEPOSIT}/client?${query}`)
   }
 
   showModal = () => {
@@ -287,10 +292,10 @@ clientID = () => {
               <div className="filter-block">
                 <label className="small-text">Operation:</label>
                 <div>
-                  <Select value={datas.action || ''} className="filter-input" onChange={e => this.changeFilter(e, 'action')}>
+                  <Select defaultValue="All Status" className="filter-input" onChange={e => this.changeFilter(e, 'action')}>
                     {
                       DEPOSIT_REPORT_STATUS.map(action => (
-                        <Select.Option key={action.code} value={action.code}>{action.name}</Select.Option>
+                        <Select.Option key={action.code} onChangeValue={action.filter} value={action.code}>{action.name}</Select.Option>
                       ))
                     }
                   </Select>

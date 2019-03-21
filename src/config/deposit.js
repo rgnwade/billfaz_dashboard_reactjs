@@ -6,7 +6,7 @@ export const DEPOSIT_TYPES = {
 export const DEPOSIT_REPORT_STATUS = [
   {
     name: 'All Operation',
-    code: 'all',
+    code: 'all'
   }, {
     name: 'Payment',
     code: 'payment',
