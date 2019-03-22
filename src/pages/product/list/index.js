@@ -99,6 +99,9 @@ class ProductList extends Component {
 
   changeFilter = (value, field) => {
     const { params } = this.state
+    if(value == ""){
+      value = null
+    }
     this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: value })
   }
 
@@ -178,7 +181,7 @@ class ProductList extends Component {
         <div style={{ marginRight: '1em' }}>
           <label className="small-text">Product Status:</label>
           <div>
-            <Select value={params.active || ''} style={{ width: 150 }} onChange={e => this.changeFilter(e, 'active')}>
+            <Select defaultValue="All" style={{ width: 150 }} onChange={e => this.changeFilter(e, 'active')}>
               {
                 OPTIONS_CONFIG_ACTIVE.map(option => (
                   <Select.Option key={option.id} value={option.id}>{option.name}</Select.Option>
