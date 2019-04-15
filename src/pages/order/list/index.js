@@ -14,6 +14,9 @@ import { generateUrlQueryParams, parseUrlQueryParams, compareParams } from '../.
 import OrderReport from '../report'
 import './order-list.scss'
 
+const formatTime = 'HH:mm';
+const formatDate = 'DD-MM-YYYY';
+
 class OrderList extends Component {
   constructor(props) {
     super(props)
@@ -121,6 +124,8 @@ class OrderList extends Component {
           dateStart: datas.startDate ? datas.startDate.format('YYYY-MM-DD') : '',
           dateEnd: datas.endDate ? datas.endDate.format('YYYY-MM-DD') : '',
         }
+        console.log(payload)
+        
         OrderApi.export(payload)
           .then((res) => {
             message.success('Export data success')
@@ -147,6 +152,20 @@ class OrderList extends Component {
     this.setState({ ...this.state, datas: { ...datas, [field]: value } })
   }
 
+  changeDate = async (value, field) => {
+    const { params, datas } = this.state
+    let datefilter = value.format('YYYY-MM-DD')
+    await this.setState({ ...this.state, datas: { ...datas, [field]: value } })
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: datefilter})
+  }
+
+  changeEndDate = async (value, field) => {
+    const { params,datas } = this.state
+    let datefilter = value.format('YYYY-MM-DD')
+    await this.setState({ ...this.state, datas: { ...datas, [field]: value } })
+    this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: datefilter})
+  }
+
   render() {
     const { loading, data, params, valPerPage, datas } = this.state
     return (
@@ -158,7 +177,7 @@ class OrderList extends Component {
           handlePrevPage={this.handlePrevPage}
           handleNextPage={this.handleNextPage}
           loading={loading}
-          searchText="#Order ID, $Customer Number"
+          searchText="Order ID, Customer Number"
           searchValue={params.query}
           changeSearch={this.changeSearch}
           changeValue={params.query}
@@ -184,7 +203,7 @@ class OrderList extends Component {
               <div style={{ marginRight: '1em' }}>
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker style={{ width: 150 }} value={datas.startDate} onChange={e => this.changeInput(e, 'startDate')} />
+                  <DatePicker style={{ width: 150 }} format={formatDate} key={datas.startDate} value={datas.startDate} onChange={e => this.changeDate(e, 'startDate')} />
                 </div>
               </div>
               <div style={{ marginTop: '29px', marginRight: '10px' }}>
@@ -193,7 +212,7 @@ class OrderList extends Component {
               <div style={{ marginRight: '0.5em' }}>
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker style={{ width: 150 }} value={datas.endDate} onChange={e => this.changeInput(e, 'endDate')} />
+                  <DatePicker style={{ width: 150 }} disabled={!(datas.startDate)} format={formatDate} value={datas.endDate} onChange={e => this.changeEndDate(e, 'endDate')} />
                 </div>
               </div>
             </div>

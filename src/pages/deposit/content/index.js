@@ -104,6 +104,34 @@ class ClientDeposit extends Component {
       this.setState({ ...this.state, datas: { ...datas, [field]: value } });
     }
 
+    changeDate = async (value, field) => {
+      const { params, datas } = this.state
+      let datefilter = value.format('YYYY-MM-DD')
+      await this.setState({ ...this.state, datas: { ...datas, [field]: value } })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: datefilter})
+    }
+
+    changeTime = async (value, field) => {
+      const { params, datas } = this.state
+      let datefilter = value.format('HH:mm')
+      await this.setState({ ...this.state, datas: { ...datas, [field]: value } })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: datefilter})
+    }
+  
+    changeEndDate = async (value, field) => {
+      const { params,datas } = this.state
+      let datefilter = value.format('YYYY-MM-DD')
+      await this.setState({ ...this.state, datas: { ...datas, [field]: value } })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: datefilter})
+    }
+
+    changeEndTime = async (value, field) => {
+      const { params, datas } = this.state
+      let datefilter = value.format('HH:mm')
+      await this.setState({ ...this.state, datas: { ...datas, [field]: value } })
+      this.addUrlQueryParamsAndUpdateData({ ...params, page: 1, [field]: datefilter})
+    }
+
   changeModalDataStatus = (issuedStatus) => {
     const { modalData } = this.state
     this.setState({ ...this.state, modalData: { ...modalData, issuedStatus } })
@@ -304,13 +332,13 @@ clientID = () => {
               <div className="filter-block">
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker className="filter-input" format={formatDate} value={datas.dateStart} onChange={e => this.changeInput(e, 'dateStart')} />
+                  <DatePicker className="filter-input" format={formatDate} value={datas.dateStart} onChange={e => this.changeDate(e, 'dateStart')} />
                 </div>
               </div>
               <div className="filter-block">
                 <label className="small-text">Time:</label>
                 <div>
-                  <TimePicker className="filter-input" format={formatTime} value={datas.timeStart} onChange={e => this.changeInput(e, 'timeStart')} />
+                  <TimePicker className="filter-input" format={formatTime} disabled={!(datas.dateStart)} value={datas.timeStart} onChange={e => this.changeTime(e, 'timeStart')} />
                 </div>
               </div>
               <div className="filter-block" style={{ marginTop: '26px' }}>
@@ -319,13 +347,13 @@ clientID = () => {
               <div className="filter-block">
                 <label className="small-text">Date:</label>
                 <div>
-                  <DatePicker className="filter-input" format={formatDate} value={datas.dateEnd} onChange={e => this.changeInput(e, 'dateEnd')} />
+                  <DatePicker className="filter-input" format={formatDate} disabled={!(datas.timeStart)} value={datas.dateEnd} onChange={e => this.changeEndDate(e, 'dateEnd')} />
                 </div>
               </div>
               <div className="filter-block">
                 <label className="small-text">Time:</label>
                 <div>
-                  <TimePicker className="filter-input" format={formatTime} value={datas.timeEnd} onChange={e => this.changeInput(e, 'timeEnd')} />
+                  <TimePicker className="filter-input" format={formatTime} disabled={!(datas.dateEnd)} value={datas.timeEnd} onChange={e => this.changeEndTime(e, 'timeEnd')} />
                 </div>
               </div>
             </div>
