@@ -10,7 +10,7 @@
     "localforage": "^1.7.3",
     "node-sass": "^4.10.0",
     "prop-types": "^15.6.2",
-    "qs": "^6.6.0",
+    "qs": "^6.6.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
